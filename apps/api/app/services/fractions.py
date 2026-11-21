@@ -74,6 +74,30 @@ def classify(a: tuple[int, int], b: tuple[int, int], ans: Optional[tuple[int, in
     return None
 
 
+def line_value(text: str) -> Optional[Fraction]:
+    """Valor de un renglón tipo '= 3/6 + 2/6' (solo sumas de fracciones); None si tiene otra cosa."""
+    t = (text or "").replace("−", "-").strip().lstrip("=").strip()
+    if not t or re.search(r"[×*·x÷:\-]", t):
+        return None
+    parts = [p.strip() for p in t.split("+")]
+    total = Fraction(0)
+    for p in parts:
+        fr = parse_frac(p)
+        if fr is None:
+            return None
+        total += Fraction(*fr)
+    return total
+
+
+def first_wrong_line(lines: list[str], right: Fraction) -> Optional[int]:
+    """Índice del primer renglón cuyo valor ya no es igual al resultado correcto."""
+    for i, text in enumerate(lines):
+        v = line_value(text)
+        if v is not None and v != right:
+            return i
+    return None
+
+
 def simplified(f: Fraction) -> tuple[int, int]:
     return f.numerator, f.denominator
 

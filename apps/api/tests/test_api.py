@@ -167,3 +167,17 @@ def test_vision_does_not_retry_on_timeout(monkeypatch):
     with pytest.raises(grok.GrokError):
         grok.vision_json("x", b"img", retries=1)
     assert calls["n"] == 1
+
+
+def test_transcription_only_is_diagnosed_by_rules(monkeypatch):
+    code = c.post("/api/classes", json={"name": "x"}).json()["code"]
+    asg = c.post(f"/api/classes/{code}/assignments", data={"key_text": "1/2+1/3"}).json()
+    monkeypatch.setattr(vision, "run_ai", lambda _i, _e: {
+        "student_name": "Sofía", "confidence": 0.92, "final_answer": "5/12",
+        "lines": [{"text": "1/2 + 1/3", "box": {"x": .1, "y": .1, "w": .5, "h": .1}},
+                  {"text": "= 3/6 + 2/6", "box": {"x": .1, "y": .25, "w": .5, "h": .1}},
+                  {"text": "= 5/12", "box": {"x": .1, "y": .4, "w": .3, "h": .1}}]})
+    d = c.post(f"/api/assignments/{asg['id']}/sheets", files={"image": ("h.jpg", jpeg((5, 50, 90)), "image/jpeg")}).json()
+    d = c.get(f"/api/diagnoses/{d['id']}").json()
+    assert d["status"] == "done" and d["error_code"] == "SUMA_DENOMINADORES" and d["error_line"] == 2
+    assert d["error_box"]["y"] == .4 and d["student_name"] == "Sofía" and d["feedback"]
