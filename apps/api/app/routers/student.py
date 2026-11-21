@@ -7,7 +7,7 @@ from ..schemas import (Diagnosis, Exercise, ProblemIn, ProgressIn, QuizIn, QuizO
                        StudentOut, StudentSummary)
 from ..services import board as board_svc
 from ..services import problems, sheets
-from ..store import CLASSES, DIAGNOSES, LOCK, STUDENTS, find_or_create_student
+from ..store import DIAGNOSES, LOCK, STUDENTS, find_class_code, find_or_create_student
 from .teacher import read_upload
 
 router = APIRouter(tags=["solo"])
@@ -22,9 +22,10 @@ def get_student(student_id: str):
 
 @router.post("/students", response_model=StudentOut)
 def create_student(body: StudentIn):
-    code = (body.class_code or "").strip().upper() or None
-    if code and code not in CLASSES:
-        raise HTTPException(404, "Ese código de salón no existe. Pídeselo a tu profe o déjalo vacío.")
+    typed = (body.class_code or "").strip()
+    code = find_class_code(typed) if typed else None
+    if typed and not code:
+        raise HTTPException(404, f"No encontré el salón «{typed}». Revisa el código con tu profe (ej. MAT-194) o déjalo vacío.")
     st = find_or_create_student(body.name, code, "solo")
     return StudentOut(id=st.id, name=st.name, class_code=st.class_code)
 

@@ -123,3 +123,12 @@ def test_ask_and_explain_back_fallback(monkeypatch):
     assert steps
     r = c.post("/api/lessons/explain-back", json={"lesson_id": "error:SUMA_DIRECTA", "transcript": "porque los pedazos no son del mismo tamaño"}).json()
     assert r["understood"]
+
+
+def test_class_code_is_forgiving():
+    code = c.post("/api/classes", json={"name": "5to B"}).json()["code"]
+    assert code.startswith("MAT-")
+    for typed in (code, code.lower(), code.replace("-", ""), code.replace("-", " "), code[-3:]):
+        r = c.post("/api/students", json={"name": "Kevin", "class_code": typed})
+        assert r.status_code == 200 and r.json()["class_code"] == code, typed
+    assert c.post("/api/students", json={"name": "K", "class_code": "999"}).status_code == 404
