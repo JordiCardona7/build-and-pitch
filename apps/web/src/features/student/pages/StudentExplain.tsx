@@ -6,6 +6,7 @@ import { Button, EmptyState, ScribbleLoader } from "@/shared/ui";
 import { friendlyError } from "../message";
 import { loadSession } from "../session";
 import { quizLesson } from "../sketches";
+import { recoverMissingStudent } from "../recoverSession";
 
 export function StudentExplain() {
   const navigate = useNavigate();
@@ -25,12 +26,14 @@ export function StudentExplain() {
         if (!cancel) setItems(quiz.items);
       })
       .catch((cause: unknown) => {
-        if (!cancel) setError(friendlyError(cause, "No pude cargar las preguntas. Probemos otra vez."));
+        if (cancel) return;
+        if (recoverMissingStudent(cause, session.id, navigate)) return;
+        setError(friendlyError(cause, "No pude cargar las preguntas. Probemos otra vez."));
       });
     return () => {
       cancel = true;
     };
-  }, [session]);
+  }, [session, navigate]);
 
   if (!session) {
     return (
@@ -61,6 +64,7 @@ export function StudentExplain() {
       const result = await api.submitQuiz(session.id, nextAnswers);
       navigate(`/clase?lesson=${encodeURIComponent(result.lesson_id)}`);
     } catch (cause) {
+      if (recoverMissingStudent(cause, session.id, navigate)) return;
       setError(friendlyError(cause, "No pude armar tu clase. Probemos otra vez."));
       setSending(false);
       answered.current.delete(current.id);
