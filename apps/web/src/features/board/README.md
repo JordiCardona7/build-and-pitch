@@ -52,6 +52,7 @@ player.current?.answerCheckpoint(answer);
 - Un checkpoint espera cualquier respuesta no vacía. La evaluación pedagógica corresponde a la capa de interacción/API; P2 no decide si el alumno comprendió.
 - `state` y `currentStep` son valores vivos del handle. Para actualizar React, usar `onStateChange` y `onStepChange`.
 - La velocidad inicial es `0.75×`, un 25 % más lenta. `speed` (prop) o `setSpeed` (handle) aceptan 0.25–4. Ajustan trazo y respaldo silencioso. La velocidad de un speaker externo la administra P4.
+- Las clases con varios pasos muestran «Ritmo del trazo» aunque P4 use `controls={false}`. La selección (0.5–2×) se guarda en el navegador y se aplica durante el trazo sin reiniciar la lección. El sandbox conserva su selector controlado de 0.5–4×. `showSpeedControl` permite cambiar la visibilidad; al controlar `speed`, usar `onSpeedChange` para un selector editable.
 - Sin `speak`, espera 330 ms por palabra. Cada paso ejecuta voz y dibujo en paralelo. La duración del dibujo se ajusta a una estimación de la voz, no a la duración real de un archivo de audio.
 - Otra llamada a `play` o desmontar el componente cancela la ejecución anterior, su audio, animaciones y preguntas pendientes.
 - Las operaciones desconocidas se avisan en consola y se omiten. `clear` borra en barridos con borrador y elimina también los clips del texto y las barras.

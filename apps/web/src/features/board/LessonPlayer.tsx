@@ -19,6 +19,8 @@ export type LessonPlayerProps = {
   autoPlay?: boolean;
   controls?: boolean;
   speed?: number;
+  onSpeedChange?: (speed: number) => void;
+  showSpeedControl?: boolean;
   className?: string;
 };
 const stateLabels: Record<PlayerState, string> = {
@@ -28,15 +30,28 @@ const stateLabels: Record<PlayerState, string> = {
   aside: "Vamos de otra forma",
   done: "¡Ahora te toca a ti!",
 };
+const SPEED_KEY = 'trace.board.speed';
+const SPEED_OPTIONS = [0.5, 0.75, 1, 1.25, 1.5, 2];
+function savedSpeed(): number {
+  try {
+    const value = Number(localStorage.getItem(SPEED_KEY));
+    return SPEED_OPTIONS.includes(value) ? value : DEFAULT_PLAYBACK_SPEED;
+  } catch { return DEFAULT_PLAYBACK_SPEED; }
+}
 
 export function LessonPlayer(props: LessonPlayerProps) {
   const {
     lesson,
     autoPlay = false,
     controls = true,
-    speed = DEFAULT_PLAYBACK_SPEED,
+    speed: controlledSpeed,
+    showSpeedControl = controlledSpeed === undefined && (lesson?.steps.length ?? 0) > 1,
     className = "",
   } = props;
+  const [selectedSpeed, setSelectedSpeed] = useState(savedSpeed);
+  const speed = controlledSpeed ?? selectedSpeed;
+  const speedRef = useRef(speed);
+  speedRef.current = speed;
   const latest = useRef(props);
   latest.current = props;
   const player = useRef<BoardPlayer>();
@@ -83,7 +98,7 @@ export function LessonPlayer(props: LessonPlayerProps) {
       },
     );
     player.current = instance;
-    instance.setSpeed(latest.current.speed ?? DEFAULT_PLAYBACK_SPEED);
+    instance.setSpeed(speedRef.current);
     latest.current.onReady?.(instance);
     return () => {
       instance.dispose();
@@ -105,6 +120,11 @@ export function LessonPlayer(props: LessonPlayerProps) {
     setError("");
     if (lesson) void player.current?.play(lesson).catch(reportError);
   };
+  const changeSpeed = (next: number): void => {
+    setSelectedSpeed(next);
+    props.onSpeedChange?.(next);
+    try { localStorage.setItem(SPEED_KEY, String(next)); } catch { /* Conserva la elección durante la clase. */ }
+  };
   return (
     <section
       className={`w-full text-ink ${className}`}
@@ -119,7 +139,10 @@ export function LessonPlayer(props: LessonPlayerProps) {
             {lesson?.title ?? "Tu pizarra está lista"}
           </h2>
         </div>
-        {lesson && <ProgressDots total={lesson.steps.length} current={step} />}
+        <div className="flex flex-wrap items-center gap-4">
+          {showSpeedControl && <label className="flex flex-wrap items-center gap-2 text-sm font-semibold text-ink-soft">Ritmo del trazo<select aria-label="Ritmo de la pizarra" value={speed} disabled={controlledSpeed !== undefined && !props.onSpeedChange} onChange={event => changeSpeed(Number(event.target.value))} className="rounded-lg border border-line bg-card px-3 py-2 text-ink">{SPEED_OPTIONS.map(value => <option key={value} value={value}>{value === 0.5 ? 'Muy tranquilo' : value === 0.75 ? 'Tranquilo' : value === 1 ? 'Normal' : value === 1.25 ? 'Ágil' : value === 1.5 ? 'Rápido' : 'Repaso'} · {value}×</option>)}</select></label>}
+          {lesson && <ProgressDots total={lesson.steps.length} current={step} />}
+        </div>
       </header>
       <Board
         onReady={ready}
