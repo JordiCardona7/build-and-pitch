@@ -11,7 +11,7 @@ export function Landing() {
           {BRAND.tagline}
         </h1>
         <p className="max-w-md text-lg text-ink-soft">
-          Una pizarra que ve el error exacto y te lo explica. No es un chat.
+          Una pizarra que ve el error exacto y te lo explica.
         </p>
         <div className="flex flex-col gap-3 sm:flex-row">
           <Link to="/docente">
