@@ -57,6 +57,12 @@ type Board = {                         // el semáforo
 
 Etiquetas en español de cada `ErrorCode`: `GET /api/meta` (no las escribas a mano en el front).
 
+Notas de implementación (P1):
+- `Board.groups` ya viene **ordenado**: grupos de error de mayor a menor, luego `REVISAR` y `CORRECTO`. `label` es la frase humana para "14 alumnos <label>", ej. "sumaron también los de abajo".
+- Un alumno que ya entendió (pasó a verde) **se queda en el grupo de su error** con estado `verde`: el docente ve que ese error se está superando.
+- `Diagnosis.image_url` puede ser `""` (alumnos del salón demo, sin foto). Es relativo (`/api/files/...`) o, en mocks, un `data:` URL.
+- `GET /lessons/for-diagnosis/{id}` devuelve una lección con id `diag:<id>`; úsalo tal cual en `/lessons/ask`, `/lessons/explain-back` y `/progress`.
+
 ---
 
 ## 2. Endpoints
@@ -76,6 +82,7 @@ Etiquetas en español de cada `ErrorCode`: `GET /api/meta` (no las escribas a ma
 | GET | `/assignments/{id}/board` | — | `Board` (polling cada 2–3 s) |
 | PATCH | `/diagnoses/{id}` | `{ error_code: ErrorCode \| null, student_name?: string }` | `Diagnosis` con `teacher_override:true` |
 | POST | `/demo/seed` | `{ class_code }` | `Board` con ~25 alumnos simulados + 3 hojas demo |
+| GET | `/classes/{code}` | — | `{ code, name, assignments: { id, exercise }[] }` *(agregado por P1: pantalla "Mis tareas")* |
 
 ### Puerta Solo (alumno)
 | Método | Ruta | Cuerpo | Respuesta |
