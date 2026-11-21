@@ -1,17 +1,34 @@
 """[NOMBRE] — API. Correr desde apps/api:  uvicorn app.main:app --reload --port 8000"""
 import logging
+from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from . import config
+from . import config, store
 from .routers import interact, lessons, student, teacher
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
 
-app = FastAPI(title="Pizarra API", version="1.0")
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    store.load()            # recupera salones, alumnos y hojas tras un reinicio
+    store.start_autosave()
+    yield
+    store.save()
+
+
+app = FastAPI(title="Pizarra API", version="1.0", lifespan=lifespan)
+
+
+@app.middleware("http")
+async def mark_changes(request: Request, call_next):
+    response = await call_next(request)
+    if request.method != "GET":
+        store.mark_dirty()
+    return response
 app.add_middleware(CORSMiddleware, allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
                    allow_methods=["*"], allow_headers=["*"])
 

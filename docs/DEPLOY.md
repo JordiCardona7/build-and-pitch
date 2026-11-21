@@ -34,7 +34,8 @@ if STATIC.exists():
 (Registrar este catch-all **después** de todos los routers de `/api`.)
 
 ## Datos
-- SQLite y las fotos viven en el disco del contenedor: **se borran en cada despliegue**. Para la demo está bien: al arrancar, si la base está vacía, se cargan el salón demo y las hojas demo.
+- El estado (salones, alumnos, hojas) se guarda solo cada 3 s en `apps/api/storage/state.pkl`, junto con las fotos.
+- **Para que sobreviva a los despliegues**, en Railway: clic derecho en el servicio (o *Command palette → Add Volume*) → **Volume** con *mount path* **`/srv/storage`**. Sin volume, cada despliegue empieza vacío.
 - Las lecciones pregeneradas y las hojas demo van en el repo (`apps/api/app/data/`), no en la base.
 
 ## Día de la demo
