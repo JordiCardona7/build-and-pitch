@@ -1,4 +1,4 @@
-# [NOMBRE]
+# Trace
 
 **Sacamos a la IA del chat y la pusimos en una pizarra.** Hackathon Build & Pitch · UVG · Track EdTech.
 

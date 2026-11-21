@@ -1,4 +1,4 @@
-# PRD — [NOMBRE]
+# PRD — Trace
 > **Sacamos a la IA del chat y la pusimos en una pizarra.**
 > Versión 1.0 · Hackathon Build & Pitch · UVG · 21 nov 2026 · Track 02 EdTech
 > El nombre del producto está pendiente. En el código se usa una sola constante (`BRAND.name` en `apps/web/src/shared/brand.ts`); nunca lo escribas a mano en otro lado.

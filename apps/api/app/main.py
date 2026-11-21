@@ -1,4 +1,4 @@
-"""[NOMBRE] — API. Correr desde apps/api:  uvicorn app.main:app --reload --port 8000"""
+"""Trace — API. Correr desde apps/api:  uvicorn app.main:app --reload --port 8000"""
 import logging
 from contextlib import asynccontextmanager
 
@@ -20,7 +20,7 @@ async def lifespan(_app: FastAPI):
     store.save()
 
 
-app = FastAPI(title="Pizarra API", version="1.0", lifespan=lifespan)
+app = FastAPI(title="Trace API", version="1.0", lifespan=lifespan)
 
 
 @app.middleware("http")
