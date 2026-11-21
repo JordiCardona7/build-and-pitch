@@ -1,4 +1,5 @@
 """Puerta Aula: salones, tareas (clave), hojas, diagnósticos y semáforo."""
+import re
 from typing import Optional
 
 from fastapi import APIRouter, BackgroundTasks, File, Form, HTTPException, UploadFile
@@ -38,6 +39,10 @@ def create_class(body: ClassIn):
 def get_class(code: str):
     """Adicional al contrato: el salón y sus tareas (para la pantalla 'Mis tareas')."""
     c = CLASSES.get(find_class_code(code) or code)
+    if not c and re.fullmatch(r"MAT-\d{3}", code.strip().upper()):
+        # El servidor se reinició y perdió el salón, pero el navegador del docente aún lo recuerda: lo recreamos vacío.
+        with LOCK:
+            c = CLASSES.setdefault(code.strip().upper(), ClassRec(code=code.strip().upper(), name="Mi salón"))
     if not c:
         raise HTTPException(404, "No encontré ese salón.")
     return {"code": c.code, "name": c.name,
