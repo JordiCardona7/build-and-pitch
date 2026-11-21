@@ -143,3 +143,9 @@ def test_state_survives_restart(monkeypatch, tmp_path):
     assert c.get(f"/api/students/{st['id']}").status_code == 404
     store.load()
     assert c.get(f"/api/students/{st['id']}").json()["name"] == "Kevin"
+
+
+def test_lost_class_is_recreated():
+    r = c.get("/api/classes/MAT-591")
+    assert r.status_code == 200 and r.json()["code"] == "MAT-591" and r.json()["assignments"] == []
+    assert c.get("/api/classes/OTRO").status_code == 404

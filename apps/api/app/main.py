@@ -38,7 +38,9 @@ for r in (interact.router, teacher.router, student.router, lessons.router):
 
 @app.get("/api/health", include_in_schema=False)
 def health():
-    return {"ok": True, "ai": config.has_ai(), "demo_mode": config.DEMO_MODE}
+    return {"ok": True, "ai": config.has_ai(), "demo_mode": config.DEMO_MODE,
+            "saved_state": store.STATE_FILE.exists(),
+            "counts": {"classes": len(store.CLASSES), "students": len(store.STUDENTS), "sheets": len(store.DIAGNOSES)}}
 
 
 # Frontend compilado (lo copia el Dockerfile). Debe ir DESPUÉS de las rutas /api. Ver docs/DEPLOY.md
