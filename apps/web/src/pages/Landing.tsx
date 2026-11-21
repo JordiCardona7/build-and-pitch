@@ -52,7 +52,7 @@ export function Landing() {
               rx="42"
               ry="28"
               fill="none"
-              stroke="#D62828"
+              className="stroke-marker-red"
               strokeWidth="2.5"
               strokeDasharray="5 3"
             />
@@ -61,17 +61,17 @@ export function Landing() {
               cy="120"
               r="48"
               fill="none"
-              stroke="#EA7A12"
+              className="stroke-marker-orange"
               strokeWidth="3"
             />
             <path
               d="M220 72 L220 168 M172 120 L268 120"
-              stroke="#EA7A12"
+              className="stroke-marker-orange"
               strokeWidth="2"
             />
             <path
               d="M220 72 A48 48 0 0 1 268 120 L220 120 Z"
-              fill="#EA7A12"
+              className="fill-marker-orange"
               opacity="0.35"
             />
           </svg>

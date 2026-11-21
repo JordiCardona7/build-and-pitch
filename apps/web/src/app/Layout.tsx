@@ -13,8 +13,15 @@ export function Layout() {
         <div className="mx-auto flex h-14 max-w-6xl items-center px-4 sm:px-6">
           <Link
             to="/"
-            className="font-display text-lg font-extrabold tracking-tight text-ink hover:text-marker-blue"
+            className="inline-flex items-center gap-2 font-display text-lg font-extrabold tracking-tight text-ink hover:text-marker-blue"
           >
+            <img
+              src="/brand-mark.svg"
+              alt=""
+              width={24}
+              height={24}
+              className="h-6 w-6 shrink-0"
+            />
             {BRAND.name}
           </Link>
         </div>
