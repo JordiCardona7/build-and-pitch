@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Layout } from "@/app/Layout";
 import { Landing } from "@/pages/Landing";
+import { Pitch } from "@/pages/Pitch";
 import { BoardSandbox } from "@/pages/sandbox/BoardSandbox";
 import { InteractSandbox } from "@/pages/sandbox/InteractSandbox";
 import { TeacherHome } from "@/features/teacher/pages/TeacherHome";
@@ -17,6 +18,7 @@ export const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { index: true, element: <Landing /> },
+      { path: "pitch", element: <Pitch /> },
       { path: "docente", element: <TeacherHome /> },
       { path: "docente/tarea/:assignmentId", element: <TeacherAssignment /> },
       {
