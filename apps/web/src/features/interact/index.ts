@@ -1,3 +1,4 @@
+export { preloadHandModel } from "./useHandRaise";
 export { useSpeaker } from "./useSpeaker";
 export { createSpeaker } from "./speaker";
 export { useInterruptTriggers } from "./useInterruptTriggers";
