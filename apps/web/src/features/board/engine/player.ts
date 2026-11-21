@@ -27,6 +27,7 @@ export type PlayerEvents = {
   onStateChange?: (state: PlayerState) => void;
   onAsideChange?: (visible: boolean) => void;
 };
+export const DEFAULT_PLAYBACK_SPEED = 0.75;
 export const estimatedSpeechMs = (text: string): number =>
   text.trim() ? text.trim().split(/\s+/u).length * 330 : 0;
 export const silentSpeaker: Speaker = {
@@ -92,7 +93,7 @@ export class BoardPlayer implements PlayerHandle {
   private aside?: DrawContext;
   private speech?: AbortController;
   private speechOwner?: DrawContext;
-  private speed = 1;
+  private speed = DEFAULT_PLAYBACK_SPEED;
   private checkpoint?: {
     ctx: DrawContext;
     prompt: string;
@@ -112,7 +113,7 @@ export class BoardPlayer implements PlayerHandle {
   setSpeed(speed: number): void {
     this.speed = Number.isFinite(speed)
       ? Math.min(4, Math.max(0.25, speed))
-      : 1;
+      : DEFAULT_PLAYBACK_SPEED;
     if (this.main) this.main.speed = this.speed;
     if (this.aside) this.aside.speed = this.speed;
   }

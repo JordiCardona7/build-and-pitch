@@ -5,7 +5,7 @@ export type { LessonPlayerProps } from "./LessonPlayer";
 export { drawOps, OPS } from "./ops";
 export { makeCtx } from "./engine/context";
 export type { DrawContext, BoardElements } from "./engine/context";
-export { silentSpeaker } from "./engine/player";
+export { DEFAULT_PLAYBACK_SPEED, silentSpeaker } from "./engine/player";
 export type {
   PlayerHandle,
   PlayerState,

@@ -3,7 +3,7 @@ import { Board } from "./Board";
 import { Button } from "../../shared/ui/Button";
 import { ProgressDots } from "../../shared/ui/ProgressDots";
 import type { BoardElements } from "./engine/context";
-import { BoardPlayer, silentSpeaker } from "./engine/player";
+import { BoardPlayer, DEFAULT_PLAYBACK_SPEED, silentSpeaker } from "./engine/player";
 import type { Lesson, PlayerHandle, PlayerState, Speaker } from "./types";
 
 export type LessonPlayerProps = {
@@ -34,7 +34,7 @@ export function LessonPlayer(props: LessonPlayerProps) {
     lesson,
     autoPlay = false,
     controls = true,
-    speed = 1,
+    speed = DEFAULT_PLAYBACK_SPEED,
     className = "",
   } = props;
   const latest = useRef(props);
@@ -83,7 +83,7 @@ export function LessonPlayer(props: LessonPlayerProps) {
       },
     );
     player.current = instance;
-    instance.setSpeed(latest.current.speed ?? 1);
+    instance.setSpeed(latest.current.speed ?? DEFAULT_PLAYBACK_SPEED);
     latest.current.onReady?.(instance);
     return () => {
       instance.dispose();

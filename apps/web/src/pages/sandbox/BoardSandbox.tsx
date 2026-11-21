@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import {
   LessonPlayer,
+  DEFAULT_PLAYBACK_SPEED,
   type Lesson,
   type Op,
   type PlayerHandle,
@@ -21,7 +22,7 @@ export function BoardSandbox({ lessons = [] }: { lessons?: Lesson[] }) {
   const [lesson, setLesson] = useState(demoLesson);
   const [json, setJson] = useState(JSON.stringify(demoLesson, null, 2));
   const [error, setError] = useState("");
-  const [speed, setSpeed] = useState(1);
+  const [speed, setSpeed] = useState(DEFAULT_PLAYBACK_SPEED);
   const [state, setState] = useState<PlayerState>("idle");
   const [busy, setBusy] = useState(false);
   const [loadingLessons, setLoadingLessons] = useState(false);
@@ -170,7 +171,7 @@ export function BoardSandbox({ lessons = [] }: { lessons?: Lesson[] }) {
                   value={speed}
                   onChange={(event) => setSpeed(Number(event.target.value))}
                 >
-                  {[0.5, 1, 1.5, 2, 4].map((value) => (
+                  {[0.5, 0.75, 1, 1.5, 2, 4].map((value) => (
                     <option key={value} value={value}>
                       {value}×
                     </option>
