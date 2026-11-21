@@ -9,6 +9,7 @@ import { loadSession, saveSession, type SoloSession } from "../session";
 import { problemLesson } from "../sketches";
 import { confirmedGreen, nextPracticeSession } from "../practice";
 import { recoverMissingStudent } from "../recoverSession";
+import { isSheetImage, prepareSheetFile } from "../sheetImage";
 
 type Phase = "loading" | "solving" | "capture" | "reviewing" | "correct" | "wrong" | "review" | "error";
 
@@ -101,9 +102,9 @@ export function StudentProblem() {
   useEffect(() => {
     if (phase !== "reviewing") return;
     const timeout = setTimeout(() => {
-      setError("La revisión está tardando. Puedes intentar otra foto con buena luz.");
+      setError("La revisión está tardando más de lo normal. Puedes esperar un poco más o tomar otra foto, con buena luz.");
       setPhase("capture");
-    }, 45_000);
+    }, 100_000);
     return () => clearTimeout(timeout);
   }, [phase, diagnosisId]);
 
@@ -126,16 +127,17 @@ export function StudentProblem() {
   const upload = async (files: File[]) => {
     const file = files[0];
     if (!file || !exercise) return;
-    if (!file.type.startsWith("image/") || file.size > 8 * 1024 * 1024) {
-      setError("Elige una foto de tu hoja de hasta 8 MB.");
+    if (!isSheetImage(file)) {
+      setError("Elige una foto de tu hoja. Si es un archivo de otro tipo, toma la foto otra vez.");
       return;
     }
     setError("");
-    setDiagnosisId(null);
-    setPreviewUrl(URL.createObjectURL(file));
     setPhase("reviewing");
     try {
-      const pending = await api.uploadProblemSheet(session.id, exercise.id, file);
+      const ready = await prepareSheetFile(file);
+      setDiagnosisId(null);
+      setPreviewUrl(URL.createObjectURL(ready));
+      const pending = await api.uploadProblemSheet(session.id, exercise.id, ready);
       settled.current = null;
       setDiagnosisId(pending.id);
     } catch (cause) {
@@ -203,7 +205,25 @@ export function StudentProblem() {
         </StickyNote>
       ) : null}
 
-      {phase === "review" && result ? <EmptyState title="Miremos tu hoja con calma" description={result.feedback || "No pudimos leer un paso con suficiente confianza. Pide ayuda a tu profe o intenta una foto más clara."} action={<Button onClick={() => setPhase("capture")}>Tomar otra foto</Button>} /> : null}
+      {phase === "review" && result ? (
+        <div className="space-y-4">
+          <PhotoCard
+            imageUrl={result.image_url || previewUrl || undefined}
+            name={session.name}
+            statusLabel="Esto es lo que alcancé a leer"
+            errorBox={result.error_box}
+            footer={<p>{result.feedback || "No estoy segura de un paso. Si la foto se ve clara, seguimos con eso."}</p>}
+          />
+          <div className="flex flex-wrap gap-3">
+            {result.error_code ? (
+              <Button size="lg" onClick={() => navigate(`/clase?diagnosis=${result.id}`)}>
+                Explícamelo en la pizarra
+              </Button>
+            ) : null}
+            <Button variant="secondary" onClick={() => setPhase("capture")}>Tomar otra foto</Button>
+          </div>
+        </div>
+      ) : null}
 
       {phase === "wrong" && result ? (
         <div className="space-y-4">

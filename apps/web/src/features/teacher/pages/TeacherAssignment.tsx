@@ -97,7 +97,7 @@ export function TeacherAssignment() {
   });
 
   async function pollDiagnosis(id: string) {
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 70; i++) {
       const d = await api.getDiagnosis(id);
       setSheets((prev) =>
         prev.map((s) => (s.diagnosis.id === id ? { ...s, diagnosis: d } : s)),
