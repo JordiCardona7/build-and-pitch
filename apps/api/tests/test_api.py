@@ -149,3 +149,21 @@ def test_lost_class_is_recreated():
     r = c.get("/api/classes/MAT-591")
     assert r.status_code == 200 and r.json()["code"] == "MAT-591" and r.json()["assignments"] == []
     assert c.get("/api/classes/OTRO").status_code == 404
+
+
+def test_vision_does_not_retry_on_timeout(monkeypatch):
+    from app.services import grok
+    calls = {"n": 0}
+
+    class R:
+        def create(self, **_k):
+            calls["n"] += 1
+            raise TimeoutError("se tardó")
+
+    class C:
+        responses = R()
+
+    monkeypatch.setattr(grok, "_client", lambda _t: C())
+    with pytest.raises(grok.GrokError):
+        grok.vision_json("x", b"img", retries=1)
+    assert calls["n"] == 1

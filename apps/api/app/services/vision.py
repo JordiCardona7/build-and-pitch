@@ -30,10 +30,10 @@ FEEDBACK = {   # respaldo si la IA no da una frase buena
 
 
 def prepare_image(raw: bytes) -> bytes:
-    """Rota según EXIF, pasa a JPG y limita a 1600 px de lado largo."""
+    """Rota según EXIF, pasa a JPG y limita a 1280 px de lado largo (suficiente para letra a mano y más rápido)."""
     img = Image.open(io.BytesIO(raw))
     img = ImageOps.exif_transpose(img).convert("RGB")
-    img.thumbnail((1600, 1600))
+    img.thumbnail((1280, 1280))
     out = io.BytesIO()
     img.save(out, "JPEG", quality=85)
     return out.getvalue()
