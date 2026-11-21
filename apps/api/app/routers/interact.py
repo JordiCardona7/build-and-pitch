@@ -3,7 +3,7 @@ import hashlib
 from collections import OrderedDict
 
 from fastapi import APIRouter, HTTPException
-from fastapi.responses import Response
+from fastapi.responses import HTMLResponse, Response
 
 from .. import config
 from ..schemas import MetaOut, TtsIn
@@ -18,6 +18,30 @@ _CACHE_MAX = 400
 @router.get("/meta", response_model=MetaOut)
 def meta():
     return MetaOut(error_labels=ERROR_LABELS, level_labels=LEVEL_LABELS, demo_mode=config.DEMO_MODE)
+
+
+VOICES = ["eve", "carina", "luna", "zagan", "helix", "orion"]
+SAMPLE = ("Hola. Sumaste un medio más un tercio y te dio dos quintos. Es de los errores más comunes; "
+          "veamos juntos por qué no puede ser. Si te pierdes, levanta la mano.")
+
+
+@router.get("/tts/preview", response_class=HTMLResponse, include_in_schema=False)
+def tts_preview():
+    """Página para escuchar y comparar las voces de Grok: /api/tts/preview"""
+    current = config.XAI_TTS_VOICE
+    rows = "".join(
+        f'<li><b>{v}</b>{" (actual)" if v == current else ""}<br><audio controls preload="none" '
+        f'src="/api/tts/sample?voice={v}"></audio></li>' for v in VOICES)
+    status = "✅ llave cargada" if config.has_ai() else "❌ sin XAI_API_KEY: la app está usando la voz del navegador"
+    return f"""<!doctype html><meta charset="utf-8"><title>Voces</title>
+<body style="font-family:system-ui;max-width:640px;margin:40px auto;line-height:1.5">
+<h1>Voces de Grok</h1><p>{status}</p><p><i>{SAMPLE}</i></p><ul style="list-style:none;padding:0">{rows}</ul>
+<p>Para cambiarla: variable <code>XAI_TTS_VOICE</code> en Railway (y en tu .env).</p></body>"""
+
+
+@router.get("/tts/sample", include_in_schema=False)
+def tts_sample(voice: str = "eve"):
+    return tts(TtsIn(text=SAMPLE, voice=voice if voice in VOICES else None))
 
 
 @router.post("/tts")
