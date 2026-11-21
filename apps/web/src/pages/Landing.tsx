@@ -6,7 +6,19 @@ export function Landing() {
   return (
     <main className="mx-auto grid min-h-[calc(100vh-3.5rem)] max-w-6xl items-center gap-10 px-4 py-10 sm:px-6 lg:grid-cols-2">
       <div className="space-y-6">
-        <p className="font-hand text-2xl text-marker-blue">{BRAND.name}</p>
+        <div className="flex items-center gap-3">
+          <img
+            src="/brand-mark.png"
+            alt=""
+            width={48}
+            height={48}
+            className="h-12 w-12 rounded-xl"
+            decoding="async"
+          />
+          <p className="font-display text-3xl font-extrabold tracking-tight text-ink">
+            {BRAND.name}
+          </p>
+        </div>
         <h1 className="max-w-xl font-display text-4xl font-extrabold leading-tight text-ink md:text-5xl">
           {BRAND.tagline}
         </h1>

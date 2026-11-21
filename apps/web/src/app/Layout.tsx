@@ -13,9 +13,17 @@ export function Layout() {
         <div className="mx-auto flex h-14 max-w-6xl items-center px-4 sm:px-6">
           <Link
             to="/"
-            className="font-display text-lg font-extrabold tracking-tight text-ink hover:text-marker-blue"
+            className="flex items-center gap-2 font-display text-lg font-extrabold tracking-tight text-ink hover:text-marker-blue"
           >
-            {BRAND.name}
+            <img
+              src="/brand-mark.png"
+              alt=""
+              width={32}
+              height={32}
+              className="h-8 w-8 rounded-lg"
+              decoding="async"
+            />
+            <span>{BRAND.name}</span>
           </Link>
         </div>
       </header>
