@@ -132,3 +132,14 @@ def test_class_code_is_forgiving():
         r = c.post("/api/students", json={"name": "Kevin", "class_code": typed})
         assert r.status_code == 200 and r.json()["class_code"] == code, typed
     assert c.post("/api/students", json={"name": "K", "class_code": "999"}).status_code == 404
+
+
+def test_state_survives_restart(monkeypatch, tmp_path):
+    monkeypatch.setattr(store, "STATE_FILE", tmp_path / "state.pkl")
+    code = c.post("/api/classes", json={"name": "1ro"}).json()["code"]
+    st = c.post("/api/students", json={"name": "Kevin", "class_code": code}).json()
+    store.save()
+    store.reset()
+    assert c.get(f"/api/students/{st['id']}").status_code == 404
+    store.load()
+    assert c.get(f"/api/students/{st['id']}").json()["name"] == "Kevin"

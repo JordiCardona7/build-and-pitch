@@ -1,16 +1,22 @@
 """Estado en memoria. Suficiente para el hackathon: el contenedor se reinicia en cada despliegue
 y al arrancar se puede volver a cargar el salón demo. Todo acceso pasa por aquí."""
+import logging
+import os
+import pickle
 import random
 import string
 import threading
+import time
 import unicodedata
 import uuid
 from dataclasses import dataclass, field
 from typing import Optional
 
+from . import config
 from .schemas import Diagnosis, Exercise, Lesson
 
 LOCK = threading.RLock()
+log = logging.getLogger("store")
 
 
 def new_id(prefix: str) -> str:
@@ -109,3 +115,48 @@ def reset() -> None:
     with LOCK:
         for d in (CLASSES, ASSIGNMENTS, STUDENTS, DIAGNOSES, LESSONS):
             d.clear()
+    mark_dirty()
+
+
+# ---------- Persistencia: foto del estado en disco cada pocos segundos ----------
+# Sobrevive a reinicios del proceso; con un Volume de Railway montado en /srv/storage, también a los despliegues.
+STATE_FILE = config.STORAGE_DIR / "state.pkl"
+_dirty = threading.Event()
+
+
+def mark_dirty() -> None:
+    _dirty.set()
+
+
+def save() -> None:
+    with LOCK:
+        data = pickle.dumps({"classes": CLASSES, "assignments": ASSIGNMENTS, "students": STUDENTS, "diagnoses": DIAGNOSES})
+    tmp = STATE_FILE.with_suffix(".tmp")
+    tmp.write_bytes(data)
+    os.replace(tmp, STATE_FILE)
+
+
+def load() -> None:
+    if not STATE_FILE.exists():
+        return
+    try:
+        data = pickle.loads(STATE_FILE.read_bytes())
+        with LOCK:
+            CLASSES.update(data["classes"]); ASSIGNMENTS.update(data["assignments"])
+            STUDENTS.update(data["students"]); DIAGNOSES.update(data["diagnoses"])
+        log.info("estado recuperado: %d salones, %d alumnos, %d hojas", len(CLASSES), len(STUDENTS), len(DIAGNOSES))
+    except Exception as e:  # noqa: BLE001 — un archivo dañado no debe impedir que arranque la app
+        log.warning("no pude leer el estado guardado (%s); empiezo vacío", e)
+
+
+def start_autosave(every_s: float = 3.0) -> None:
+    def loop():
+        while True:
+            time.sleep(every_s)
+            if _dirty.is_set():
+                _dirty.clear()
+                try:
+                    save()
+                except Exception as e:  # noqa: BLE001
+                    log.warning("no pude guardar el estado: %s", e)
+    threading.Thread(target=loop, daemon=True, name="autosave").start()

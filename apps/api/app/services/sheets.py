@@ -5,7 +5,7 @@ from typing import Optional
 
 from .. import config
 from ..schemas import Diagnosis, Exercise
-from ..store import DIAGNOSES, LOCK, STUDENTS, DiagRec, find_or_create_student, new_id
+from ..store import DIAGNOSES, LOCK, STUDENTS, DiagRec, find_or_create_student, mark_dirty, new_id
 from . import vision
 from .grok import GrokError
 
@@ -48,6 +48,7 @@ def process(diag_id: str, raw: bytes, class_code: Optional[str]) -> None:
             rec.diagnosis = d.model_copy(update={
                 "status": "failed", "confidence": 0.0,
                 "feedback": "No pude leer bien la hoja. Prueba con otra foto, con buena luz y de frente."})
+        mark_dirty()
         return
 
     ai_name = fields.pop("ai_student_name", None)
@@ -66,3 +67,4 @@ def process(diag_id: str, raw: bytes, class_code: Optional[str]) -> None:
                     st.verified = True
         elif rec.context == "solo":
             st.correct_after_lesson = 0
+    mark_dirty()
