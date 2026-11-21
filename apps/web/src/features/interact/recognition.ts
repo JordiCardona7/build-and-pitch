@@ -110,7 +110,7 @@ export function startRecognition(options: SessionOptions): () => void {
     };
     current.onend = () => {
       if (stopped) return;
-      committed = [committed, sessionText].filter(Boolean).join(" ");
+      committed = [committed, sessionText].filter(Boolean).join(" ").slice(-6_000);
       // El silencio normal no es un fallo. Sí limitamos desconexiones inmediatas.
       if (!hadResult && !silent && Date.now() - startedAt < 1_000) failures += 1;
       if (failures >= 5) return unavailable("error");

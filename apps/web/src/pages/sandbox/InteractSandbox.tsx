@@ -3,6 +3,7 @@ import { Button, Card, ScribbleLoader } from "@/shared/ui";
 import { InteractIndicators, InterruptOverlay, useInterruptTriggers, useSpeaker } from "../../features/interact";
 import type { TriggerSource } from "../../features/interact";
 import { useSpanishVoices } from "../../features/interact/useSpanishVoices";
+import { DemoRecorder } from "../../features/interact/DemoRecorder";
 
 const sample = "Vamos a sumar un medio más un tercio. Para sumar, necesitamos pedazos del mismo tamaño. Si te pierdes, puedes levantar la mano. Vamos a partir cada tortilla en seis pedazos iguales.";
 const sources: Record<TriggerSource, string> = {
@@ -125,6 +126,7 @@ export function InteractSandbox() {
             : <p className="text-ink-soft">Al pausar, verás aquí qué lo activó.</p>}
         </div>
       </Card>
+      <DemoRecorder />
       <InterruptOverlay open={open} listen={triggers.micEnabled} onCancel={resume} onQuestion={(question) => {
         setEvents((previous) => [`Tu duda: ${question}`, ...previous].slice(0, 6));
         setOpen(false);
