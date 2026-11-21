@@ -5,6 +5,7 @@ import { LessonPlayer, silentSpeaker, type PlayerHandle, type PlayerState } from
 import {
   InteractIndicators,
   InterruptOverlay,
+  preloadHandModel,
   useInterruptTriggers,
   useQuestionCapture,
   useSpeaker,
@@ -53,6 +54,11 @@ export function ClassPage() {
       setOverlay(true);
     },
   });
+
+  useEffect(() => {
+    if (!diagnosisId && !lessonId) return;
+    void preloadHandModel();
+  }, [diagnosisId, lessonId]);
 
   useEffect(() => {
     let cancel = false;

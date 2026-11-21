@@ -1,10 +1,56 @@
 import { useEffect, useRef, useState } from "react";
 import type { GestureRecognizer } from "@mediapipe/tasks-vision";
 import { GestureGate } from "./gestureGate";
+import { isHandRaised } from "./handPose";
 import type { InputStatus } from "./types";
 
 const DEFAULT_MODEL = "https://storage.googleapis.com/mediapipe-models/gesture_recognizer/gesture_recognizer/float16/1/gesture_recognizer.task";
 const DEFAULT_WASM = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.35/wasm";
+
+type ModelPaths = { modelAssetPath?: string; wasmBasePath?: string };
+
+let sharedRecognizer: Promise<GestureRecognizer> | null = null;
+let sharedKey = "";
+
+function recognizerKey(modelAssetPath: string, wasmBasePath: string): string {
+  return `${wasmBasePath} ${modelAssetPath}`;
+}
+
+/** Descarga WASM y el modelo antes de pedir la cámara, para que el primer gesto no espere la red. */
+export function preloadHandModel(paths: ModelPaths = {}): Promise<void> {
+  const modelAssetPath = paths.modelAssetPath ?? DEFAULT_MODEL;
+  const wasmBasePath = paths.wasmBasePath ?? DEFAULT_WASM;
+  return ensureRecognizer(modelAssetPath, wasmBasePath).then(() => undefined);
+}
+
+function ensureRecognizer(modelAssetPath: string, wasmBasePath: string): Promise<GestureRecognizer> {
+  const key = recognizerKey(modelAssetPath, wasmBasePath);
+  if (!sharedRecognizer || sharedKey !== key) {
+    sharedKey = key;
+    sharedRecognizer = createRecognizer(modelAssetPath, wasmBasePath).catch((error: unknown) => {
+      if (sharedKey === key) sharedRecognizer = null;
+      throw error;
+    });
+  }
+  return sharedRecognizer;
+}
+
+async function createRecognizer(modelAssetPath: string, wasmBasePath: string): Promise<GestureRecognizer> {
+  const { FilesetResolver, GestureRecognizer: Recognizer } = await import("@mediapipe/tasks-vision");
+  const vision = await FilesetResolver.forVisionTasks(wasmBasePath);
+  const create = (delegate: "GPU" | "CPU") => Recognizer.createFromOptions(vision, {
+    baseOptions: { modelAssetPath, delegate },
+    runningMode: "VIDEO",
+    numHands: 1,
+    minHandDetectionConfidence: 0.5,
+    minTrackingConfidence: 0.5,
+  });
+  try {
+    return await create("GPU");
+  } catch {
+    return await create("CPU");
+  }
+}
 
 export type HandOptions = {
   cameraEnabled: boolean;
@@ -40,7 +86,6 @@ export function useHandRaise(options: HandOptions) {
       clearTimeout(loadingTimer);
       cancelAnimationFrame(frame);
       stream?.getTracks().forEach((track) => track.stop());
-      recognizer?.close();
       recognizer = undefined;
       if (video) video.srcObject = null;
       gate.current.resetHold();
@@ -64,8 +109,8 @@ export function useHandRaise(options: HandOptions) {
           previousFrameAt = now;
           const result = recognizer.recognizeForVideo(video, now);
           const gesture = result.gestures[0]?.[0];
-          const wrist = result.landmarks[0]?.[0];
-          const isRaised = Boolean(gesture?.categoryName === "Open_Palm" && gesture.score >= 0.7 && wrist && wrist.y < 0.5);
+          const landmarks = result.landmarks[0];
+          const isRaised = isHandRaised(gesture, landmarks);
           setRaised((value) => value === isRaised ? value : isRaised);
           if (gate.current.update(isRaised, now)) current.current.onRaise();
         }
@@ -83,17 +128,8 @@ export function useHandRaise(options: HandOptions) {
         video.srcObject = stream;
         await video.play();
         if (disposed) return;
-        const { FilesetResolver, GestureRecognizer: Recognizer } = await import("@mediapipe/tasks-vision");
-        const vision = await FilesetResolver.forVisionTasks(wasmBasePath);
+        const loaded = await ensureRecognizer(modelAssetPath, wasmBasePath);
         if (disposed) return;
-        const create = (delegate: "GPU" | "CPU") => Recognizer.createFromOptions(vision, {
-          baseOptions: { modelAssetPath, delegate }, runningMode: "VIDEO", numHands: 1,
-          minHandDetectionConfidence: 0.6, minTrackingConfidence: 0.6,
-        });
-        let loaded: GestureRecognizer;
-        try { loaded = await create("GPU"); }
-        catch (error) { if (disposed) throw error; loaded = await create("CPU"); }
-        if (disposed) { loaded.close(); return; }
         recognizer = loaded;
         clearTimeout(loadingTimer);
         stream.getVideoTracks().forEach((track) => track.addEventListener("ended", () => {
