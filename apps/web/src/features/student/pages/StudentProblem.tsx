@@ -8,6 +8,7 @@ import { friendlyError } from "../message";
 import { loadSession, saveSession, type SoloSession } from "../session";
 import { problemLesson } from "../sketches";
 import { confirmedGreen, nextPracticeSession } from "../practice";
+import { recoverMissingStudent } from "../recoverSession";
 
 type Phase = "loading" | "solving" | "capture" | "reviewing" | "correct" | "wrong" | "review" | "error";
 
@@ -50,6 +51,7 @@ export function StudentProblem() {
       })
       .catch((cause: unknown) => {
         if (cancel) return;
+        if (recoverMissingStudent(cause, current.id, navigate)) return;
         setError(friendlyError(cause, "No pude armar un problema. Probemos otra vez."));
         setPhase("error");
       });
@@ -57,7 +59,7 @@ export function StudentProblem() {
       cancel = true;
       generation.current += 1;
     };
-  }, [session?.id, round]);
+  }, [session?.id, round, navigate]);
 
   useEffect(() => {
     const data = diagnosis.data;
@@ -84,14 +86,17 @@ export function StudentProblem() {
       const token = generation.current;
       void api.getStudent(current.id).then((summary) => {
         if (token === generation.current && settled.current === data.id && confirmedGreen(next, summary.status)) setGreen(true);
-      }).catch(() => { /* Solo el servidor puede confirmar el semáforo. */ });
+      }).catch((cause: unknown) => {
+        if (token !== generation.current) return;
+        recoverMissingStudent(cause, current.id, navigate);
+      });
       return;
     }
     const next = nextPracticeSession(current, data);
     saveSession(next);
     setSession(next);
     setPhase("wrong");
-  }, [diagnosis.data, diagnosisId]);
+  }, [diagnosis.data, diagnosisId, navigate]);
 
   useEffect(() => {
     if (phase !== "reviewing") return;
@@ -134,6 +139,7 @@ export function StudentProblem() {
       settled.current = null;
       setDiagnosisId(pending.id);
     } catch (cause) {
+      if (recoverMissingStudent(cause, session.id, navigate)) return;
       setError(friendlyError(cause, "No pude subir la foto. Probemos otra vez."));
       setPhase("capture");
     }
