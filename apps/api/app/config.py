@@ -11,8 +11,13 @@ load_dotenv(API_DIR / ".env")
 
 XAI_API_KEY = os.getenv("XAI_API_KEY", "").strip()
 XAI_BASE_URL = os.getenv("XAI_BASE_URL", "https://api.x.ai/v1")
-XAI_VISION_MODEL = os.getenv("XAI_VISION_MODEL") or "grok-4.7"
-XAI_TEXT_MODEL = os.getenv("XAI_TEXT_MODEL") or "grok-4.7"
+def _model(var: str, default: str = "grok-4.7") -> str:
+    v = (os.getenv(var) or "").split("#")[0].strip()
+    return v if len(v) > 3 else default          # ignora valores vacíos o basura ("x")
+
+
+XAI_VISION_MODEL = _model("XAI_VISION_MODEL")
+XAI_TEXT_MODEL = _model("XAI_TEXT_MODEL")
 XAI_TTS_VOICE = os.getenv("XAI_TTS_VOICE") or "eve"
 XAI_TTS_LANGUAGE = os.getenv("XAI_TTS_LANGUAGE") or "es"
 DEMO_MODE = os.getenv("DEMO_MODE", "true").lower() == "true"

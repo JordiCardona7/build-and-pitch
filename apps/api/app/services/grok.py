@@ -31,8 +31,11 @@ def extract_json(text: str) -> dict[str, Any]:
         text = fence.group(1)
     m = re.search(r"\{.*\}", text, re.S)
     if not m:
-        raise GrokError("Grok no devolvió JSON")
-    return json.loads(m.group(0))
+        raise GrokError(f"Grok no devolvió JSON. Respondió: {text[:160]!r}")
+    try:
+        return json.loads(m.group(0))
+    except json.JSONDecodeError as e:
+        raise GrokError(f"JSON inválido de Grok: {e}. Respondió: {text[:160]!r}") from e
 
 
 def vision_json(prompt: str, image_jpeg: bytes, system: Optional[str] = None, retries: int = 1) -> dict[str, Any]:
@@ -56,13 +59,14 @@ def vision_json(prompt: str, image_jpeg: bytes, system: Optional[str] = None, re
 
 
 def text_json(system: str, user: str, timeout: Optional[float] = None) -> dict[str, Any]:
+    """Texto → JSON con la Responses API (la que documenta xAI hoy)."""
     client = _client(timeout or config.TEXT_TIMEOUT_S)
-    r = client.chat.completions.create(
+    r = client.responses.create(
         model=config.XAI_TEXT_MODEL,
-        messages=[{"role": "system", "content": system}, {"role": "user", "content": user}],
-        temperature=0.4,
+        input=[{"role": "system", "content": system}, {"role": "user", "content": user}],
+        store=False,
     )
-    return extract_json(r.choices[0].message.content or "")
+    return extract_json(r.output_text or "")
 
 
 def tts(text: str, voice: Optional[str] = None) -> bytes:
