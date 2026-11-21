@@ -1,0 +1,28 @@
+# Reemplaza @p1-usuario, etc. por los usuarios de GitHub del equipo.
+*                                   @p1-usuario
+/docs/CONTRACTS.md                  @p1-usuario
+/apps/api/                          @p1-usuario
+/apps/web/src/shared/api/           @p1-usuario
+
+/apps/web/src/features/board/       @p2-usuario
+/apps/web/src/pages/sandbox/BoardSandbox.tsx  @p2-usuario
+/apps/web/public/board/             @p2-usuario
+
+/apps/web/src/features/teacher/     @p3-usuario
+/apps/web/src/shared/ui/            @p3-usuario
+/apps/web/src/shared/brand.ts       @p3-usuario
+/apps/web/src/styles/               @p3-usuario
+/apps/web/src/app/                  @p3-usuario
+/apps/web/src/pages/Landing.tsx     @p3-usuario
+/apps/web/tailwind.config.ts        @p3-usuario
+/docs/DESIGN.md                     @p3-usuario
+
+/apps/web/src/features/student/     @p4-usuario
+/apps/web/src/features/interact/    @p4-usuario
+/apps/web/src/pages/sandbox/InteractSandbox.tsx  @p4-usuario
+
+# Compartidos: requieren aviso en el grupo
+/apps/web/package.json              @p1-usuario @p2-usuario @p3-usuario @p4-usuario
+/apps/web/package-lock.json         @p1-usuario @p2-usuario @p3-usuario @p4-usuario
+/PRD.md                             @p1-usuario @p2-usuario @p3-usuario @p4-usuario
+/AGENTS.md                          @p1-usuario @p2-usuario @p3-usuario @p4-usuario

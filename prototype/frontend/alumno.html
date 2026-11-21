@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mi ruta · Pizarra Viva</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#14201b; --card:#1d2b25; --accent:#f5c542; --text:#f3f4f1; --muted:#9fb0a7;
+          --rojo:#ef4444; --amarillo:#f5c542; --verde:#22c55e; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:Inter, system-ui, sans-serif; }
+  main { max-width:480px; margin:0 auto; padding:20px 16px 40px; }
+  h1 { font-size:20px; margin:0 0 4px; } h1 span { color:var(--accent); }
+  .muted { color:var(--muted); font-size:14px; }
+  .card { background:var(--card); border-radius:16px; padding:18px; margin-top:16px; }
+  label { display:block; font-weight:600; margin-bottom:6px; }
+  input { width:100%; font:inherit; font-size:18px; padding:12px; border-radius:10px; border:1px solid #3a4a42;
+          background:#0f1814; color:var(--text); }
+  .ex { display:flex; align-items:center; gap:12px; margin:12px 0; }
+  .ex .q { font-family:Caveat, cursive; font-size:32px; min-width:120px; }
+  .ex input { width:110px; text-align:center; }
+  button { font:inherit; font-weight:700; border:0; border-radius:12px; padding:14px; width:100%; cursor:pointer;
+           background:var(--accent); color:#1a1a1a; margin-top:10px; font-size:16px; }
+  .route { list-style:none; padding:0; margin:0; }
+  .route li { display:flex; gap:14px; padding:14px 0; border-bottom:1px solid #2b3a33; align-items:flex-start; }
+  .route li:last-child { border:0; }
+  .dot { width:34px; height:34px; border-radius:50%; flex:none; display:grid; place-items:center; font-weight:700;
+         background:#2b3a33; color:var(--muted); }
+  .done .dot { background:var(--verde); color:#06210f; }
+  .now .dot { background:var(--accent); color:#1a1a1a; }
+  .route h3 { margin:4px 0; font-size:16px; }
+  .route .body { flex:1; }
+  .badge { display:inline-block; padding:4px 10px; border-radius:999px; font-size:13px; font-weight:700; }
+  .stars { font-size:22px; letter-spacing:2px; }
+  .feedback { margin-top:8px; font-weight:600; }
+  .hidden { display:none; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Pizarra <span>Viva</span></h1>
+  <div class="muted">1ro básico · Matemática · Suma de fracciones</div>
+
+  <!-- 1. Diagnóstico -->
+  <section id="diag" class="card">
+    <label for="name">Tu nombre</label>
+    <input id="name" placeholder="Ej. Ana" autocomplete="off">
+    <p class="muted" style="margin-top:16px">Resuelve. Escribe tu respuesta como fracción, por ejemplo <b>3/4</b>.</p>
+    <div id="exercises"></div>
+    <button id="btn-submit">Entregar</button>
+  </section>
+
+  <!-- 2. Ruta -->
+  <section id="route-card" class="card hidden">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div><b id="who"></b><div class="muted" id="err-label"></div></div>
+      <div class="stars" id="stars"></div>
+    </div>
+    <ul class="route" id="route"></ul>
+  </section>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+const params = new URLSearchParams(location.search);
+let DATA = null, ME = null;
+
+async function api(path, body) {
+  const r = await fetch('/api' + path, body ? { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) } : {});
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+
+async function init() {
+  DATA = await api('/exercises');
+  $('exercises').innerHTML = DATA.exercises.map(e =>
+    `<div class="ex"><span class="q">${e.text} =</span><input id="a-${e.id}" inputmode="text" placeholder="?"></div>`).join('');
+  const name = params.get('student');
+  if (name) {
+    try { ME = await api('/student/' + encodeURIComponent(name)); renderRoute(); } catch (e) {}
+  }
+}
+
+$('btn-submit').onclick = async () => {
+  const student = $('name').value.trim();
+  if (!student) { $('name').focus(); return; }
+  const answers = {};
+  DATA.exercises.forEach(e => answers[e.id] = $('a-' + e.id).value);
+  ME = await api('/submit', { student, answers });
+  history.replaceState(null, '', '?student=' + encodeURIComponent(student));
+  renderRoute();
+};
+
+function renderRoute() {
+  $('diag').classList.add('hidden');
+  $('route-card').classList.remove('hidden');
+  $('who').textContent = ME.name;
+  $('err-label').textContent = ME.error_label ? 'Tu reto: ' + ME.error_label : '¡Lo dominas!';
+  $('stars').textContent = '⭐'.repeat(ME.stars || 0);
+
+  const st = ME.steps || {};
+  const nodes = [
+    { key:'diagnostico', title:'Diagnóstico', html:'Listo. Ya sé en qué te confundiste.' },
+    { key:'clase', title:'Clase en la pizarra',
+      html:`Una mini clase sobre tu error exacto.<button onclick="goClass()">▶ Entrar a la pizarra</button>` },
+    { key:'practica', title:'Práctica',
+      html:`<div class="ex"><span class="q">${DATA.practice.text} =</span><input id="ans-practica" placeholder="?"></div>
+            <button onclick="check('practica')">Revisar</button><div class="feedback" id="fb-practica"></div>` },
+    { key:'reto', title:'Reto final (estilo PISA)',
+      html:`<p>${DATA.challenge.text}</p><input id="ans-reto" placeholder="Ej. 3/8">
+            <button onclick="check('reto')">Revisar</button><div class="feedback" id="fb-reto"></div>` },
+  ];
+  if (!ME.error) { nodes[1].html = 'No la necesitas, ¡vas muy bien!'; st.clase = true; }
+  const firstOpen = nodes.findIndex(n => !st[n.key]);
+  $('route').innerHTML = nodes.map((n, i) => {
+    const cls = st[n.key] ? 'done' : (i === firstOpen ? 'now' : '');
+    const body = i === firstOpen ? n.html : (st[n.key] ? '✓ Completado' : '🔒 Se desbloquea al terminar el paso anterior');
+    return `<li class="${cls}"><div class="dot">${st[n.key] ? '✓' : i + 1}</div>
+            <div class="body"><h3>${n.title}</h3><div class="muted">${body}</div></div></li>`;
+  }).join('');
+  if (firstOpen === -1) $('err-label').textContent = '🟢 ¡Ruta completada! Ya estás en verde.';
+}
+
+function goClass() {
+  location.href = `pizarra.html?student=${encodeURIComponent(ME.name)}&error=${encodeURIComponent(ME.error)}`;
+}
+
+async function check(step) {
+  const answer = $('ans-' + step).value;
+  const r = await api('/progress', { student:ME.name, step, answer });
+  if (r.correct) { ME = r; renderRoute(); }
+  else $('fb-' + step).textContent = 'Casi. Revisa: ¿los pedazos son del mismo tamaño?';
+}
+window.goClass = goClass; window.check = check;
+init();
+</script>
+</body>
+</html>

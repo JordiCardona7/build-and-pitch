@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pizarra Viva</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#14201b; --panel:#1d2b25; --accent:#f5c542; --text:#f3f4f1; --muted:#9fb0a7; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:Inter, system-ui, sans-serif;
+         height:100vh; display:flex; flex-direction:column; overflow:hidden; }
+  header { display:flex; align-items:center; justify-content:space-between; padding:10px 18px; }
+  header h1 { font-size:16px; margin:0; font-weight:700; letter-spacing:.3px; }
+  header h1 span { color:var(--accent); }
+  #lesson-title { color:var(--muted); font-size:14px; }
+  #wrap { flex:1; display:flex; align-items:center; justify-content:center; padding:0 16px; min-height:0; }
+  svg#board { width:100%; max-width:1200px; max-height:100%; aspect-ratio:1000/600; background:#fbfbf6;
+              border-radius:14px; box-shadow:0 0 0 10px #6b4f2f, 0 20px 50px rgba(0,0,0,.5); }
+  #sub { min-height:56px; text-align:center; font-size:20px; padding:12px 20px 4px; line-height:1.35; max-width:1100px; margin:0 auto; }
+  #controls { display:flex; gap:10px; justify-content:center; padding:8px 0 16px; }
+  button { font:inherit; font-weight:600; border:0; border-radius:999px; padding:12px 22px; cursor:pointer; }
+  #btn-stop { background:var(--accent); color:#1a1a1a; font-size:17px; }
+  #btn-stop:disabled { opacity:.4; cursor:default; }
+  .ghost { background:transparent; color:var(--muted); border:1px solid #3a4a42; }
+  #start, #ask, #end { position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+                       background:rgba(10,16,13,.72); z-index:10; }
+  .card { background:var(--panel); padding:28px; border-radius:18px; width:min(520px, 92vw); text-align:center; }
+  .card h2 { margin:0 0 8px; font-size:24px; }
+  .card p { color:var(--muted); margin:0 0 18px; }
+  .card input { width:100%; font:inherit; font-size:18px; padding:12px 14px; border-radius:10px; border:1px solid #3a4a42;
+                background:#0f1814; color:var(--text); margin-bottom:14px; }
+  .primary { background:var(--accent); color:#1a1a1a; }
+  .row { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .mic { font-size:42px; animation:pulse 1.2s infinite; }
+  @keyframes pulse { 50% { transform:scale(1.15); } }
+  .hidden { display:none !important; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Pizarra <span>Viva</span></h1>
+  <div id="lesson-title"></div>
+</header>
+
+<div id="wrap">
+  <svg id="board" viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg">
+    <defs id="defs"></defs>
+    <g id="layer-main"></g>
+    <g id="layer-aside" opacity="0"></g>
+    <!-- Marcador (la punta está en 0,0). Se puede cambiar por <image href="hand.png"> de una mano. -->
+    <g id="hand" transform="translate(920,560)" style="pointer-events:none">
+      <g transform="rotate(38)">
+        <path d="M0,0 L16,-7 L16,7 Z" fill="#111"/>
+        <rect x="16" y="-10" width="22" height="20" rx="2" fill="#1d4ed8"/>
+        <rect x="36" y="-13" width="120" height="26" rx="9" fill="#e9eaee" stroke="#a3a7b3" stroke-width="2"/>
+        <rect x="60" y="-13" width="50" height="26" fill="#1d4ed8" opacity=".85"/>
+        <rect x="150" y="-13" width="34" height="26" rx="8" fill="#1d4ed8"/>
+      </g>
+    </g>
+  </svg>
+</div>
+
+<div id="sub"></div>
+<div id="controls">
+  <button id="btn-stop" disabled>✋ Espera, no entiendo</button>
+</div>
+
+<div id="start">
+  <div class="card">
+    <h2>Tu clase está lista</h2>
+    <p id="start-desc">Una mini clase sobre el error que tuviste. Si algo no te queda claro, toca <b>✋</b> o presiona <b>espacio</b> y pregúntame.</p>
+    <button class="primary" id="btn-start">▶ Empezar clase</button>
+  </div>
+</div>
+
+<div id="ask" class="hidden">
+  <div class="card">
+    <div class="mic" id="mic-icon">🎙️</div>
+    <h2>Te escucho</h2>
+    <p id="ask-status">Dime qué no entendiste</p>
+    <input id="q" placeholder="O escríbelo aquí…" autocomplete="off">
+    <div class="row">
+      <button class="primary" id="btn-send">Preguntar</button>
+      <button class="ghost" id="btn-continue">Seguir sin preguntar</button>
+    </div>
+  </div>
+</div>
+
+<div id="end" class="hidden">
+  <div class="card">
+    <h2>⭐ ¡Clase terminada!</h2>
+    <p>Ahora pon a prueba lo que aprendiste.</p>
+    <button class="primary" id="btn-next">Ir a la práctica →</button>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   PIZARRA VIVA — motor de pizarra
+   Una lección es {title, steps:[{say, draw:[ops]}]}.
+   Cada paso: la voz dice "say" mientras el marcador dibuja "draw".
+   Todo se puede pausar a medio trazo (✋ o barra espaciadora).
+   ============================================================ */
+const NS = 'http://www.w3.org/2000/svg';
+const $ = id => document.getElementById(id);
+const defs = $('defs'), hand = $('hand');
+const COLORS = { negro:'#1f2430', azul:'#1d4ed8', rojo:'#d62828', verde:'#15803d', morado:'#7c3aed' };
+const col = c => COLORS[c] || c || COLORS.negro;
+const params = new URLSearchParams(location.search);
+const STUDENT = params.get('student') || '';
+const ERROR = params.get('error') || 'SUMA_DIRECTA';
+const API = ''; // mismo servidor
+
+// Dos "contextos": la clase principal y la hoja de aclaración. Cada uno se pausa por separado.
+const MAIN  = { paused:false, layer:$('layer-main') };
+const ASIDE = { paused:false, layer:$('layer-aside') };
+const S = { lesson:null, currentSay:'', clarifying:false, running:false };
+
+/* ---------- utilidades de animación ---------- */
+function tween(ms, fn, ctx) {
+  return new Promise(res => {
+    let elapsed = 0, last = null;
+    function frame(t) {
+      if (last === null) last = t;
+      const dt = t - last; last = t;
+      if (!ctx.paused) elapsed += dt;
+      const p = Math.min(1, elapsed / ms);
+      fn(p);
+      p < 1 ? requestAnimationFrame(frame) : res();
+    }
+    requestAnimationFrame(frame);
+  });
+}
+function waitResume(ctx) {
+  return new Promise(res => (function chk(){ ctx.paused ? setTimeout(chk, 80) : res(); })());
+}
+function el(tag, attrs, parent) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  parent.appendChild(e);
+  return e;
+}
+const jit = (a=2.5) => (Math.random() - .5) * a;
+
+/* ---------- el marcador ---------- */
+let handPos = { x:920, y:560 };
+function moveHand(x, y) { hand.setAttribute('transform', `translate(${x.toFixed(1)},${y.toFixed(1)})`); }
+async function travel(x, y, ctx) {
+  const sx = handPos.x, sy = handPos.y, d = Math.hypot(x - sx, y - sy);
+  await tween(Math.min(380, 90 + d * .35), p => {
+    const e = p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2) / 2;
+    moveHand(sx + (x - sx) * e, sy + (y - sy) * e);
+  }, ctx);
+  handPos = { x, y };
+}
+
+/* ---------- trazos ---------- */
+const lineD = (x1,y1,x2,y2) => `M${x1+jit()} ${y1+jit()} Q${(x1+x2)/2+jit(4)} ${(y1+y2)/2+jit(4)} ${x2+jit()} ${y2+jit()}`;
+const rectD = (x,y,w,h) => `M${x+jit()} ${y+jit()} L${x+w+jit()} ${y+jit()} L${x+w+jit()} ${y+h+jit()} L${x+jit()} ${y+h+jit()} Z`;
+function ellipseD(cx, cy, rx, ry) {
+  let d = ''; const n = 44;
+  for (let i = 0; i <= n; i++) {
+    const a = -Math.PI * .65 + (i / n) * Math.PI * 2 * 1.1; // se pasa un poquito, como a mano
+    const k = 1 + (Math.random() - .5) * .05;
+    d += (i ? 'L' : 'M') + (cx + Math.cos(a) * rx * k).toFixed(1) + ' ' + (cy + Math.sin(a) * ry * k).toFixed(1);
+  }
+  return d;
+}
+
+async function strokePath(d, ctx, { color = COLORS.negro, width = 4, speed = 1.4, opacity = 1 } = {}) {
+  const p = el('path', { d, fill:'none', stroke:color, 'stroke-width':width, 'stroke-linecap':'round',
+                         'stroke-linejoin':'round', 'stroke-opacity':opacity }, ctx.layer);
+  const L = p.getTotalLength();
+  p.style.strokeDasharray = L; p.style.strokeDashoffset = L;
+  const s = p.getPointAtLength(0);
+  await travel(s.x, s.y, ctx);
+  await tween(Math.max(220, L * speed), q => {
+    p.style.strokeDashoffset = L * (1 - q);
+    const pt = p.getPointAtLength(L * q); moveHand(pt.x, pt.y);
+  }, ctx);
+  const e = p.getPointAtLength(L); handPos = { x:e.x, y:e.y };
+  return p;
+}
+
+async function opWrite(o, ctx) {
+  const size = o.size || 42;
+  const t = el('text', { x:o.x, y:o.y, 'font-size':size, fill:col(o.color), 'font-family':'Caveat, cursive',
+                         'font-weight':700, 'text-anchor':o.anchor || 'start' }, ctx.layer);
+  t.textContent = o.text;
+  const bb = t.getBBox();
+  const id = 'clip' + Math.random().toString(36).slice(2);
+  const cp = el('clipPath', { id }, defs);
+  const r = el('rect', { x:bb.x - 6, y:bb.y - 12, width:0, height:bb.height + 24 }, cp);
+  t.setAttribute('clip-path', `url(#${id})`);
+  await travel(bb.x, bb.y + bb.height * .7, ctx);
+  const n = Math.max(1, o.text.length);
+  await tween(Math.max(300, n * 80), p => {
+    const w = (bb.width + 12) * p;
+    r.setAttribute('width', w);
+    moveHand(bb.x + w - 6, bb.y + bb.height * .68 + Math.sin(p * n * 3.1) * bb.height * .2);
+  }, ctx);
+  handPos = { x:bb.x + bb.width, y:bb.y + bb.height * .7 };
+  return bb;
+}
+
+async function opFrac(o, ctx) {
+  const size = o.size || 44, color = o.color;
+  const nb = await opWrite({ text:String(o.num), x:o.x, y:o.y - size * .18, size, color, anchor:'middle' }, ctx);
+  const w = Math.max(nb.width, size * .5 * String(o.den).length) + 18;
+  await strokePath(lineD(o.x - w/2, o.y, o.x + w/2, o.y), ctx, { color:col(color), width:3.5, speed:2 });
+  await opWrite({ text:String(o.den), x:o.x, y:o.y + size * .82, size, color, anchor:'middle' }, ctx);
+}
+
+async function opArrow(o, ctx) {
+  const c = col(o.color);
+  await strokePath(lineD(o.x1, o.y1, o.x2, o.y2), ctx, { color:c, width:4 });
+  const a = Math.atan2(o.y2 - o.y1, o.x2 - o.x1), L = 16;
+  for (const s of [-1, 1]) {
+    const ax = o.x2 - L * Math.cos(a + s * .5), ay = o.y2 - L * Math.sin(a + s * .5);
+    await strokePath(`M${o.x2} ${o.y2} L${ax} ${ay}`, ctx, { color:c, width:4, speed:3 });
+  }
+}
+
+async function opBar(o, ctx) {
+  const { x, y, w, h } = o, parts = o.parts || 1, shade = Math.min(o.shade || 0, parts);
+  if (shade > 0) { // pinta con el marcador en zigzag, como coloreando
+    const sw = w * shade / parts; let d = `M${x + 5} ${y + h - 5}`, up = true;
+    for (let xx = x + 5; xx < x + sw - 5; xx += 11) { d += ` L${Math.min(xx + 6, x + sw - 5)} ${up ? y + 5 : y + h - 5}`; up = !up; }
+    await strokePath(d, ctx, { color:col(o.color || 'azul'), width:10, speed:.3, opacity:.4 });
+  }
+  await strokePath(rectD(x, y, w, h), ctx, { width:4, speed:.8 });
+  for (let i = 1; i < parts; i++) {
+    const xx = x + w * i / parts;
+    await strokePath(lineD(xx, y, xx, y + h), ctx, { width:3, speed:2 });
+  }
+}
+
+async function opClear(o, ctx) {
+  const nodes = [...ctx.layer.childNodes].filter(n => n.tagName !== 'rect' || !n.dataset.bg);
+  await tween(450, p => nodes.forEach(n => n.style.opacity = 1 - p), ctx);
+  nodes.forEach(n => n.remove());
+}
+
+const OPS = {
+  write:  opWrite,
+  frac:   opFrac,
+  arrow:  opArrow,
+  bar:    opBar,
+  clear:  opClear,
+  line:   (o, c) => strokePath(lineD(o.x1, o.y1, o.x2, o.y2), c, { color:col(o.color), width:o.width || 4 }),
+  rect:   (o, c) => strokePath(rectD(o.x, o.y, o.w, o.h), c, { color:col(o.color), speed:.8 }),
+  circle: (o, c) => strokePath(ellipseD(o.cx, o.cy, o.rx, o.ry || o.rx), c, { color:col(o.color || 'rojo'), width:5, speed:.9 }),
+  wait:   (o, c) => tween(o.ms || 500, () => {}, c),
+};
+
+/* ---------- voz ----------
+   Ahora usa la voz del navegador. Para usar Grok Voice, reemplaza speakOnce()
+   por una llamada a tu backend que devuelva audio, y reprodúcelo con new Audio(). */
+let voice = null;
+function pickVoice() {
+  const vs = speechSynthesis.getVoices();
+  voice = vs.find(v => /^es[-_](MX|US|419|GT|CO)/i.test(v.lang)) || vs.find(v => v.lang.startsWith('es')) || null;
+}
+speechSynthesis.onvoiceschanged = pickVoice; pickVoice();
+
+function speakOnce(text, ctx) {
+  return new Promise(res => {
+    const u = new SpeechSynthesisUtterance(text);
+    if (voice) u.voice = voice;
+    u.lang = voice ? voice.lang : 'es-MX'; u.rate = 1.03;
+    const done = () => res(ctx.paused ? 'interrupted' : 'ok');
+    u.onend = done; u.onerror = done;
+    speechSynthesis.speak(u);
+  });
+}
+const sentences = t => (t || '').split(/(?<=[.!?])\s+/).filter(Boolean);
+
+async function say(text, ctx) {
+  for (const s of sentences(text)) {
+    $('sub').textContent = s;
+    while (true) {               // si te interrumpen, repite la oración al volver
+      await waitResume(ctx);
+      if ((await speakOnce(s, ctx)) !== 'interrupted') break;
+    }
+  }
+}
+
+/* ---------- correr pasos ---------- */
+async function drawOps(ops, ctx) {
+  for (const o of ops || []) {
+    await waitResume(ctx);
+    const f = OPS[o.op];
+    if (f) { try { await f(o, ctx); } catch (e) { console.warn('op fallida', o, e); } }
+  }
+}
+async function runSteps(steps, ctx) {
+  for (const st of steps) {
+    if (ctx === MAIN) S.currentSay = st.say || '';
+    await Promise.all([say(st.say, ctx), drawOps(st.draw, ctx)]);
+    await waitResume(ctx);
+  }
+}
+
+/* ---------- interrupción: "Espera, no entiendo" ---------- */
+let rec = null;
+function interrupt() {
+  if (!S.running || MAIN.paused || S.clarifying) return;
+  MAIN.paused = true;
+  speechSynthesis.cancel();
+  $('sub').textContent = '⏸ Pausado';
+  $('q').value = '';
+  $('ask').classList.remove('hidden');
+  listen();
+}
+
+function listen() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { $('ask-status').textContent = 'Escribe tu duda'; $('mic-icon').classList.add('hidden'); return; }
+  $('mic-icon').classList.remove('hidden');
+  rec = new SR(); rec.lang = 'es-GT'; rec.interimResults = true;
+  rec.onresult = e => {
+    const txt = [...e.results].map(r => r[0].transcript).join('');
+    $('q').value = txt;
+    if (e.results[e.results.length - 1].isFinal) askQuestion(txt);
+  };
+  rec.onerror = () => { $('ask-status').textContent = 'No te escuché bien, escríbelo'; };
+  try { rec.start(); } catch (e) {}
+}
+
+async function askQuestion(q) {
+  q = (q || '').trim();
+  if (!q) return;
+  try { rec && rec.stop(); } catch (e) {}
+  $('ask').classList.add('hidden');
+  S.clarifying = true;
+
+  // "Pasa la hoja": una hoja de aclaración encima de la pizarra
+  const aside = ASIDE.layer;
+  aside.innerHTML = '';
+  const bg = el('rect', { x:0, y:0, width:1000, height:600, rx:14, fill:'#fffbe8' }, aside); bg.dataset.bg = '1';
+  el('text', { x:30, y:40, 'font-size':22, fill:'#a16207', 'font-family':'Inter, sans-serif', 'font-weight':700 }, aside).textContent = 'ACLARACIÓN';
+  aside.style.transition = 'opacity .35s'; aside.setAttribute('opacity', '1');
+
+  $('sub').textContent = 'Pensando…';
+  let steps;
+  try {
+    const r = await fetch(`${API}/api/ask`, { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ question:q, context:S.currentSay, lesson_title:S.lesson?.title || '' }) });
+    if (!r.ok) throw new Error(r.status);
+    steps = (await r.json()).steps;
+  } catch (e) {
+    steps = [{ say:`Buena pregunta. Me dijiste: ${q}. Lo vemos otra vez, más despacio.`,
+               draw:[{ op:'write', text:'Tu duda:', x:60, y:120, size:40, color:'azul' },
+                     { op:'write', text:q.slice(0, 42), x:60, y:180, size:36 }] }];
+  }
+  ASIDE.paused = false;
+  await runSteps(steps, ASIDE);
+  await tween(700, () => {}, ASIDE);
+
+  aside.setAttribute('opacity', '0');
+  setTimeout(() => { aside.innerHTML = ''; }, 400);
+  S.clarifying = false;
+  MAIN.paused = false;   // la clase sigue justo donde se quedó
+}
+
+function resumeWithoutAsking() {
+  try { rec && rec.stop(); } catch (e) {}
+  $('ask').classList.add('hidden');
+  MAIN.paused = false;
+}
+
+/* ---------- arranque ---------- */
+async function loadLesson() {
+  const r = await fetch(`${API}/api/lesson/${ERROR}`);
+  if (!r.ok) throw new Error('No se pudo cargar la lección (' + r.status + ')');
+  return r.json();
+}
+
+async function start() {
+  $('start').classList.add('hidden');
+  await document.fonts.load('700 40px Caveat'); await document.fonts.ready;
+  try { S.lesson = await loadLesson(); }
+  catch (e) { $('sub').textContent = '⚠️ ' + e.message + '. ¿Está corriendo el backend?'; return; }
+  $('lesson-title').textContent = S.lesson.title || '';
+  $('btn-stop').disabled = false;
+  S.running = true;
+  await runSteps(S.lesson.steps, MAIN);
+  S.running = false;
+  $('btn-stop').disabled = true;
+  if (STUDENT) fetch(`${API}/api/progress`, { method:'POST', headers:{'Content-Type':'application/json'},
+                       body: JSON.stringify({ student:STUDENT, step:'clase' }) }).catch(() => {});
+  $('end').classList.remove('hidden');
+}
+
+$('btn-start').onclick = start;
+$('btn-stop').onclick = interrupt;
+$('btn-send').onclick = () => askQuestion($('q').value);
+$('btn-continue').onclick = resumeWithoutAsking;
+$('q').addEventListener('keydown', e => { if (e.key === 'Enter') askQuestion($('q').value); });
+$('btn-next').onclick = () => location.href = `alumno.html?student=${encodeURIComponent(STUDENT)}`;
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space' && document.activeElement !== $('q')) { e.preventDefault(); interrupt(); }
+});
+</script>
+</body>
+</html>
