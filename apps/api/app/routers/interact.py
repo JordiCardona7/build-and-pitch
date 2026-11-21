@@ -44,6 +44,40 @@ def tts_sample(voice: str = "eve"):
     return tts(TtsIn(text=SAMPLE, voice=voice if voice in VOICES else None))
 
 
+@router.get("/diag/grok", include_in_schema=False)
+def diag_grok():
+    """Mide en el servidor cuánto tarda Grok en texto, visión y voz. Abrir en el navegador: /api/diag/grok"""
+    import io
+    import time as _t
+
+    from PIL import Image, ImageDraw, ImageFont
+
+    out: dict = {"modelos": {"vision": config.XAI_VISION_MODEL, "texto": config.XAI_TEXT_MODEL,
+                             "razonamiento_vision": config.XAI_VISION_REASONING or "(por defecto)", "voz": config.XAI_TTS_VOICE},
+                 "llave": config.has_ai()}
+    if not config.has_ai():
+        return out
+    img = Image.new("RGB", (900, 500), "white")
+    d = ImageDraw.Draw(img)
+    try:
+        font = ImageFont.truetype("DejaVuSans.ttf", 64)
+    except OSError:
+        font = ImageFont.load_default()
+    for y, txt in ((60, "Kevin"), (180, "1/2 + 1/3"), (300, "= 2/5")):
+        d.text((60, y), txt, fill="black", font=font)
+    buf = io.BytesIO(); img.save(buf, "JPEG")
+    for nombre, fn in (("texto", lambda: grok.text_json("Responde SOLO JSON.", 'Devuelve {"ok": true}')),
+                       ("vision", lambda: grok.vision_json('Transcribe la imagen. Responde SOLO JSON: {"renglones": ["..."]}', buf.getvalue(), retries=0)),
+                       ("voz", lambda: len(grok.tts("Hola, soy tu pizarra.")))):
+        t0 = _t.monotonic()
+        try:
+            r = fn()
+            out[nombre] = {"ok": True, "segundos": round(_t.monotonic() - t0, 1), "respuesta": str(r)[:120]}
+        except Exception as e:  # noqa: BLE001
+            out[nombre] = {"ok": False, "segundos": round(_t.monotonic() - t0, 1), "error": str(e)[:200]}
+    return out
+
+
 @router.post("/tts")
 def tts(body: TtsIn):
     text = (body.text or "").strip()

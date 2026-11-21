@@ -22,7 +22,8 @@ XAI_TTS_VOICE = os.getenv("XAI_TTS_VOICE") or "eve"
 XAI_TTS_LANGUAGE = os.getenv("XAI_TTS_LANGUAGE") or "es"
 DEMO_MODE = os.getenv("DEMO_MODE", "true").lower() == "true"
 
-VISION_TIMEOUT_S = float(os.getenv("VISION_TIMEOUT_S", "40"))
+VISION_TIMEOUT_S = float(os.getenv("VISION_TIMEOUT_S", "45"))
+XAI_VISION_REASONING = (os.getenv("XAI_VISION_REASONING") or "").strip().lower()   # "", "low", "medium", "high"
 TEXT_TIMEOUT_S = float(os.getenv("TEXT_TIMEOUT_S", "12"))
 TTS_TIMEOUT_S = float(os.getenv("TTS_TIMEOUT_S", "15"))
 

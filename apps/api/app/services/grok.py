@@ -3,6 +3,7 @@ import base64
 import json
 import logging
 import re
+import time
 from typing import Any, Optional
 
 import httpx
@@ -48,8 +49,13 @@ def extract_json(text: str) -> dict[str, Any]:
     raise GrokError(f"Grok no devolvió JSON. Respondió: {text[:160]!r}")
 
 
+def _reasoning(effort: str) -> dict[str, Any]:
+    return {"reasoning": {"effort": effort}} if effort else {}
+
+
 def vision_json(prompt: str, image_jpeg: bytes, system: Optional[str] = None, retries: int = 1) -> dict[str, Any]:
-    """Imagen + instrucciones → JSON. Usa la Responses API con input_image (docs.x.ai, Image Understanding)."""
+    """Imagen + instrucciones → JSON. Usa la Responses API con input_image (docs.x.ai, Image Understanding).
+    Si Grok se pasa del tiempo NO se reintenta (duplicaría la espera); solo se reintenta si la respuesta llega mal formada."""
     client = _client(config.VISION_TIMEOUT_S)
     b64 = base64.b64encode(image_jpeg).decode()
     content = [
@@ -57,14 +63,28 @@ def vision_json(prompt: str, image_jpeg: bytes, system: Optional[str] = None, re
         {"type": "input_text", "text": prompt},
     ]
     messages = ([{"role": "system", "content": system}] if system else []) + [{"role": "user", "content": content}]
+    extra = _reasoning(config.XAI_VISION_REASONING)
     last: Exception | None = None
-    for _ in range(retries + 1):
+    for attempt in range(retries + 1):
+        t0 = time.monotonic()
         try:
-            r = client.responses.create(model=config.XAI_VISION_MODEL, input=messages, store=False)
+            try:
+                r = client.responses.create(model=config.XAI_VISION_MODEL, input=messages, store=False, **extra)
+            except Exception as e:  # noqa: BLE001 — si el modelo no acepta "reasoning", seguir sin él
+                if extra and "reason" in str(e).lower():
+                    log.warning("el modelo no acepta reasoning (%s); sigo sin él", e)
+                    extra = {}
+                    r = client.responses.create(model=config.XAI_VISION_MODEL, input=messages, store=False)
+                else:
+                    raise
+            log.info("visión %s: %.1f s", config.XAI_VISION_MODEL, time.monotonic() - t0)
             return extract_json(r.output_text)
-        except Exception as e:  # noqa: BLE001 — reintentar una vez ante cualquier falla
+        except GrokError as e:            # JSON mal formado → vale la pena reintentar
             last = e
-            log.warning("vision falló: %s", e)
+            log.warning("visión devolvió algo raro (intento %d): %s", attempt + 1, e)
+        except Exception as e:  # noqa: BLE001 — tiempo agotado, red, 4xx/5xx: no reintentar
+            log.warning("visión falló tras %.1f s: %s", time.monotonic() - t0, e)
+            raise GrokError(str(e)) from e
     raise GrokError(str(last))
 
 
