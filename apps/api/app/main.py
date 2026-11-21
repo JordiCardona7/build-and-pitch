@@ -1,7 +1,7 @@
 """[NOMBRE] — API. Correr desde apps/api:  uvicorn app.main:app --reload --port 8000"""
 import logging
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -31,6 +31,8 @@ if config.STATIC_DIR.exists():
 
     @app.get("/{path:path}", include_in_schema=False)
     def spa(path: str):
+        if path == "api" or path.startswith("api/"):
+            raise HTTPException(404, f"No existe la ruta /{path} en la API.")
         f = (config.STATIC_DIR / path).resolve()
         if path and f.is_file() and config.STATIC_DIR.resolve() in f.parents:
             return FileResponse(f)
