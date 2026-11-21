@@ -1,0 +1,80 @@
+"""Cliente de la API de xAI (Grok). Compatible con el SDK de OpenAI: base_url=https://api.x.ai/v1"""
+import base64
+import json
+import logging
+import re
+from typing import Any, Optional
+
+import httpx
+
+from .. import config
+
+log = logging.getLogger("grok")
+
+
+class GrokError(RuntimeError):
+    pass
+
+
+def _client(timeout: float):
+    if not config.has_ai():
+        raise GrokError("Falta XAI_API_KEY")
+    from openai import OpenAI
+    return OpenAI(api_key=config.XAI_API_KEY, base_url=config.XAI_BASE_URL, timeout=httpx.Timeout(timeout), max_retries=0)
+
+
+def extract_json(text: str) -> dict[str, Any]:
+    """Saca el primer objeto JSON de la respuesta (tolera ```json ... ``` y texto alrededor)."""
+    text = (text or "").strip()
+    fence = re.search(r"```(?:json)?\s*(\{.*\})\s*```", text, re.S)
+    if fence:
+        text = fence.group(1)
+    m = re.search(r"\{.*\}", text, re.S)
+    if not m:
+        raise GrokError("Grok no devolvió JSON")
+    return json.loads(m.group(0))
+
+
+def vision_json(prompt: str, image_jpeg: bytes, system: Optional[str] = None, retries: int = 1) -> dict[str, Any]:
+    """Imagen + instrucciones → JSON. Usa la Responses API con input_image (docs.x.ai, Image Understanding)."""
+    client = _client(config.VISION_TIMEOUT_S)
+    b64 = base64.b64encode(image_jpeg).decode()
+    content = [
+        {"type": "input_image", "image_url": f"data:image/jpeg;base64,{b64}", "detail": "high"},
+        {"type": "input_text", "text": prompt},
+    ]
+    messages = ([{"role": "system", "content": system}] if system else []) + [{"role": "user", "content": content}]
+    last: Exception | None = None
+    for _ in range(retries + 1):
+        try:
+            r = client.responses.create(model=config.XAI_VISION_MODEL, input=messages, store=False)
+            return extract_json(r.output_text)
+        except Exception as e:  # noqa: BLE001 — reintentar una vez ante cualquier falla
+            last = e
+            log.warning("vision falló: %s", e)
+    raise GrokError(str(last))
+
+
+def text_json(system: str, user: str, timeout: Optional[float] = None) -> dict[str, Any]:
+    client = _client(timeout or config.TEXT_TIMEOUT_S)
+    r = client.chat.completions.create(
+        model=config.XAI_TEXT_MODEL,
+        messages=[{"role": "system", "content": system}, {"role": "user", "content": user}],
+        temperature=0.4,
+    )
+    return extract_json(r.choices[0].message.content or "")
+
+
+def tts(text: str, voice: Optional[str] = None) -> bytes:
+    """Grok Voice — texto a voz. POST /v1/tts {text, voice_id, language} → audio (MP3)."""
+    if not config.has_ai():
+        raise GrokError("Falta XAI_API_KEY")
+    r = httpx.post(
+        f"{config.XAI_BASE_URL}/tts",
+        headers={"Authorization": f"Bearer {config.XAI_API_KEY}"},
+        json={"text": text, "voice_id": voice or config.XAI_TTS_VOICE, "language": config.XAI_TTS_LANGUAGE},
+        timeout=config.TTS_TIMEOUT_S,
+    )
+    if r.status_code != 200:
+        raise GrokError(f"TTS {r.status_code}: {r.text[:200]}")
+    return r.content
