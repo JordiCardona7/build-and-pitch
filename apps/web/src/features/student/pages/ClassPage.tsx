@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { LessonPlayer, silentSpeaker, type PlayerHandle, type PlayerState } from "@/features/board";
 import {
@@ -12,6 +13,7 @@ import { api, type Lesson } from "@/shared/api";
 import { Button, EmptyState, ScribbleLoader } from "@/shared/ui";
 import { friendlyError } from "../message";
 import { loadSession, saveSession } from "../session";
+import { requestClarification } from "../clarification";
 
 export function ClassPage() {
   const navigate = useNavigate();
@@ -33,9 +35,13 @@ export function ClassPage() {
   const [explanation, setExplanation] = useState("");
   const [feedback, setFeedback] = useState("");
   const [explaining, setExplaining] = useState(false);
+  const [progress, setProgress] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const queryClient = useQueryClient();
   const handleRef = useRef<PlayerHandle | null>(null);
   const reported = useRef(false);
   const generation = useRef(0);
+  const questionRequest = useRef<AbortController | null>(null);
+  const asking = useRef(false);
   const speaker = useSpeaker();
   const capture = useQuestionCapture();
   const triggers = useInterruptTriggers({
@@ -51,6 +57,8 @@ export function ClassPage() {
   useEffect(() => {
     let cancel = false;
     generation.current += 1;
+    questionRequest.current?.abort();
+    asking.current = false;
     handleRef.current?.pause();
     speaker.stop();
     setLesson(null);
@@ -60,6 +68,12 @@ export function ClassPage() {
     setOverlay(false);
     setClarifying(false);
     setCheckpoint("");
+    setAnswer("");
+    setExplanation("");
+    setFeedback("");
+    setNotice("");
+    setProgress("idle");
+    setExplaining(false);
     reported.current = false;
     setLoading(true);
     setError("");
@@ -85,18 +99,20 @@ export function ClassPage() {
     return () => {
       cancel = true;
       generation.current += 1;
+      questionRequest.current?.abort();
       speaker.stop();
     };
   }, [diagnosisId, lessonId, speaker]);
 
-  useEffect(() => {
-    if (playerState !== "done" || !lesson || reported.current) return;
-    reported.current = true;
+  const saveProgress = useCallback(async () => {
+    if (!lesson || reported.current) return;
     const session = loadSession();
     if (!session) return;
+    reported.current = true;
+    setProgress("saving");
     const token = generation.current;
-    void api.progress(session.id, "lesson_done", lesson.id)
-      .then(() => {
+    try {
+      await api.progress(session.id, "lesson_done", lesson.id);
         const current = loadSession();
         if (token !== generation.current || current?.id !== session.id) return;
         saveSession({
@@ -105,13 +121,19 @@ export function ClassPage() {
           postLessonStreak: 0,
           targetError: lesson.error_code ?? session.targetError,
         });
-      })
-      .catch(() => {
+        setProgress("saved");
+        void queryClient.invalidateQueries({ queryKey: ["student", session.id] });
+    } catch {
         if (token !== generation.current) return;
         reported.current = false;
-        setNotice("Terminaste la clase, pero no pudimos guardar el avance. Revisa tu conexión antes de practicar.");
-      });
-  }, [playerState, lesson]);
+        setProgress("error");
+        setNotice("Terminaste la clase, pero no pudimos guardar el avance. Puedes volver a intentarlo.");
+    }
+  }, [lesson, queryClient]);
+
+  useEffect(() => {
+    if (playerState === "done") void saveProgress();
+  }, [playerState, saveProgress]);
 
   const begin = () => {
     const handle = handleRef.current;
@@ -126,46 +148,52 @@ export function ClassPage() {
   };
 
   const ask = async (question: string) => {
-    if (clarifying) return;
+    if (asking.current) return;
     const token = generation.current;
     const handle = handleRef.current;
+    if (!lesson || !handle) return;
+    asking.current = true;
+    const controller = new AbortController();
+    questionRequest.current = controller;
     setOverlay(false);
-    if (!lesson) {
-      handleRef.current?.resume();
-      return;
-    }
     setClarifying(true);
     setNotice("");
     try {
       const step = handle?.currentStep ?? 0;
-      const aside = await api.ask(lesson.id, step, question);
+      const aside = await requestClarification(() => api.ask(lesson.id, step, question), lesson, controller.signal);
       if (token !== generation.current) return;
+      if (aside.fallback) setNotice("Vamos a verlo con otro ejemplo mientras vuelve la conexión.");
       setClarifying(false);
       await handle?.playAside(aside.steps);
       if (token === generation.current) handle?.resume();
     } catch (cause) {
       if (token === generation.current) {
         setNotice(friendlyError(cause, "No pude aclararlo ahora. Puedes preguntar otra vez o seguir."));
-        handleRef.current?.resume();
       }
     } finally {
-      if (token === generation.current) setClarifying(false);
+      if (token === generation.current) { asking.current = false; setClarifying(false); }
     }
   };
 
   const explainBack = async (transcript: string) => {
-    if (!lesson || !transcript.trim()) return;
+    if (!lesson || !transcript.trim() || explaining) return;
+    const token = generation.current;
+    const session = loadSession();
     setExplaining(true);
     setNotice("");
     try {
       const result = await api.explainBack(lesson.id, transcript.trim());
-      const session = loadSession();
-      if (session && result.understood) await api.progress(session.id, "explained", lesson.id);
+      if (token !== generation.current) return;
+      if (session && loadSession()?.id === session.id && result.understood) {
+        await api.progress(session.id, "explained", lesson.id);
+        void queryClient.invalidateQueries({ queryKey: ["student", session.id] });
+      }
+      if (token !== generation.current) return;
       setFeedback(result.feedback);
     } catch (cause) {
-      setNotice(friendlyError(cause, "No pude escuchar tu explicación. Puedes escribirla."));
+      if (token === generation.current) setNotice(friendlyError(cause, "No pude escuchar tu explicación. Puedes escribirla."));
     } finally {
-      setExplaining(false);
+      if (token === generation.current) setExplaining(false);
     }
   };
 
@@ -276,6 +304,7 @@ export function ClassPage() {
               <h2 className="font-display text-2xl font-bold">Tu turno: explícamelo con tus palabras</h2>
               <p className="text-ink-soft">Cuéntame por qué no se suman los de abajo. Una frase basta.</p>
               {capture.transcript ? <p role="status">{capture.transcript}</p> : null}
+              {["denied", "unsupported", "error"].includes(capture.status) && <p role="status">No pudimos usar el micrófono. Puedes escribir tu explicación.</p>}
               <label className="block space-y-2 font-semibold" htmlFor="explain-back">
                 Tu explicación
                 <textarea
@@ -293,7 +322,7 @@ export function ClassPage() {
               <div className="flex flex-wrap gap-3">
                 <Button
                   variant="secondary"
-                  disabled={explaining || capture.status === "active"}
+                  disabled={explaining || capture.status === "active" || capture.status === "loading"}
                   onClick={() => {
                     setExplanation("");
                     void capture.start().then((text) => { if (text) setExplanation(text); });
@@ -309,7 +338,9 @@ export function ClassPage() {
                 </Button>
               </div>
               {feedback ? <p className="font-hand text-2xl text-ink">{feedback}</p> : null}
-              <Button size="lg" variant="secondary" onClick={() => navigate("/alumno/problema")}>
+              {progress === "saving" && <ScribbleLoader label="Guardando tu avance…" />}
+              {progress === "error" && <Button onClick={() => void saveProgress()}>Volver a guardar mi avance</Button>}
+              <Button size="lg" variant="secondary" disabled={progress === "saving" || progress === "error"} onClick={() => navigate("/alumno/problema")}>
                 Ponme un problema para comprobarlo
               </Button>
             </section>

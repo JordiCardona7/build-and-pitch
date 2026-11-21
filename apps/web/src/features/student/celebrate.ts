@@ -4,18 +4,19 @@ export function celebrate(): void {
     const probe = document.createElement("span");
     probe.className = "text-marker-orange";
     document.body.append(probe);
-    const orange = getComputedStyle(probe).color;
+    const toHex = (color: string) => "#" + (color.match(/\d+/g) ?? []).slice(0, 3).map((value) => Number(value).toString(16).padStart(2, "0")).join("");
+    const orange = toHex(getComputedStyle(probe).color);
     probe.className = "text-marker-blue";
-    const blue = getComputedStyle(probe).color;
+    const blue = toHex(getComputedStyle(probe).color);
     probe.className = "text-marker-green";
-    const green = getComputedStyle(probe).color;
+    const green = toHex(getComputedStyle(probe).color);
     probe.remove();
-    void confetti({
+    return confetti({
       particleCount: 90,
       spread: 72,
       origin: { y: 0.72 },
       colors: [orange, blue, green],
       disableForReducedMotion: true,
     });
-  });
+  }).catch(() => { /* Una animación sin conexión nunca debe interrumpir la práctica. */ });
 }

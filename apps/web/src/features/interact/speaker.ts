@@ -106,7 +106,7 @@ export function createSpeaker(getOptions: () => SpeakerOptions = () => ({})): Sp
           options.onSentence?.(sentence);
           if (options.tts) {
             try {
-              const blob = await abortable(options.tts(sentence), controller.signal, options.ttsTimeoutMs ?? 3_000);
+              const blob = await abortable(options.tts(sentence), controller.signal, options.ttsTimeoutMs ?? 16_000);
               await playAudio(blob, sentence, controller.signal);
               continue;
             } catch {

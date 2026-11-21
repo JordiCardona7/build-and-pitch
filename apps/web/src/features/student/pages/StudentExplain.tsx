@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { LessonPlayer, silentSpeaker } from "@/features/board";
 import { api, type QuizItem } from "@/shared/api";
@@ -15,6 +15,7 @@ export function StudentExplain() {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [error, setError] = useState("");
   const [sending, setSending] = useState(false);
+  const answered = useRef(new Set<string>());
 
   useEffect(() => {
     if (!session) return;
@@ -46,11 +47,12 @@ export function StudentExplain() {
   const current = items?.[index];
 
   const choose = async (option: string) => {
-    if (!current || sending) return;
+    if (!current || sending || answered.current.has(current.id)) return;
+    answered.current.add(current.id);
     const nextAnswers = { ...answers, [current.id]: option };
     setAnswers(nextAnswers);
     if (index < (items?.length ?? 0) - 1) {
-      setIndex((value) => value + 1);
+      setIndex(index + 1);
       return;
     }
     setSending(true);
@@ -61,6 +63,7 @@ export function StudentExplain() {
     } catch (cause) {
       setError(friendlyError(cause, "No pude armar tu clase. Probemos otra vez."));
       setSending(false);
+      answered.current.delete(current.id);
     }
   };
 
@@ -73,6 +76,7 @@ export function StudentExplain() {
       </header>
 
       {!items && !error ? <ScribbleLoader label="Dibujando la primera pregunta…" /> : null}
+      {items?.length === 0 && <EmptyState title="Todavía no hay preguntas" description="Puedes empezar practicando un problema." action={<Link to="/alumno/problema" className="text-marker-blue underline">Ponme un problema</Link>} />}
       {error ? (
         <EmptyState
           title="Algo se trabó"

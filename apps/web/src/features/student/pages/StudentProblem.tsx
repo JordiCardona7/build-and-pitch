@@ -7,6 +7,7 @@ import { celebrate } from "../celebrate";
 import { friendlyError } from "../message";
 import { loadSession, saveSession, type SoloSession } from "../session";
 import { problemLesson } from "../sketches";
+import { confirmedGreen, nextPracticeSession } from "../practice";
 
 type Phase = "loading" | "solving" | "capture" | "reviewing" | "correct" | "wrong" | "review" | "error";
 
@@ -22,6 +23,7 @@ export function StudentProblem() {
   const [green, setGreen] = useState(false);
   const [round, setRound] = useState(0);
   const settled = useRef<string | null>(null);
+  const generation = useRef(0);
   const sessionRef = useRef(session);
   sessionRef.current = session;
   const diagnosis = useDiagnosisPolling(phase === "reviewing" ? diagnosisId : null);
@@ -31,6 +33,7 @@ export function StudentProblem() {
     const current = sessionRef.current;
     if (!current) return;
     let cancel = false;
+    generation.current += 1;
     setPhase("loading");
     setResult(null);
     setDiagnosisId(null);
@@ -52,6 +55,7 @@ export function StudentProblem() {
       });
     return () => {
       cancel = true;
+      generation.current += 1;
     };
   }, [session?.id, round]);
 
@@ -72,27 +76,18 @@ export function StudentProblem() {
       return;
     }
     if (data.correct) {
-      const streak = current.lessonArmed ? current.postLessonStreak + 1 : current.postLessonStreak;
-      const next: SoloSession = {
-        ...current,
-        postLessonStreak: streak,
-        difficulty: Math.min(3, current.difficulty + 1) as 1 | 2 | 3,
-        targetError: null,
-      };
+      const next = nextPracticeSession(current, data);
       saveSession(next);
       setSession(next);
       setPhase("correct");
       celebrate();
+      const token = generation.current;
       void api.getStudent(current.id).then((summary) => {
-        if (summary.status === "verde") setGreen(true);
+        if (token === generation.current && settled.current === data.id && confirmedGreen(next, summary.status)) setGreen(true);
       }).catch(() => { /* Solo el servidor puede confirmar el semáforo. */ });
       return;
     }
-    const next: SoloSession = {
-      ...current,
-      postLessonStreak: 0,
-      targetError: data.error_code,
-    };
+    const next = nextPracticeSession(current, data);
     saveSession(next);
     setSession(next);
     setPhase("wrong");
@@ -197,7 +192,8 @@ export function StudentProblem() {
         <StickyNote color="yellow" title="¡Bien!" rotation={1}>
           <p>{result.note ? `Está bien. ${result.note}` : "Está bien. El procedimiento cierra."}</p>
           {green ? <p className="mt-2 font-hand text-2xl">¡Ya estás en verde!</p> : null}
-          <Button className="mt-4" onClick={another}>Otro problema, un poco más difícil</Button>
+          {session.lessonArmed && session.postLessonStreak === 1 ? <p className="mt-2">Llevas un acierto. Comprobémoslo con otro problema del mismo tipo.</p> : null}
+          <Button className="mt-4" onClick={another}>{session.lessonArmed && session.postLessonStreak === 1 ? "Comprobarlo con otro problema" : "Otro problema, un poco más difícil"}</Button>
         </StickyNote>
       ) : null}
 
