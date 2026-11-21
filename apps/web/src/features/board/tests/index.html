@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Pruebas de la pizarra</title>
+  </head>
+  <body>
+    <h1>Pruebas de la pizarra</h1>
+    <p id="result" role="status">Probando trazos, pausas y aclaraciones…</p>
+    <script type="module">
+      import { runBoardRegressionTests } from "./regression.ts";
+      const result = document.getElementById("result");
+      try {
+        const passed = await runBoardRegressionTests();
+        result.textContent = `Pasaron ${passed.length} pruebas.`;
+        const list = document.createElement("ul");
+        for (const name of passed) {
+          const item = document.createElement("li");
+          item.textContent = `✓ ${name}`;
+          list.appendChild(item);
+        }
+        document.body.appendChild(list);
+      } catch (error) {
+        result.textContent = `Una prueba necesita revisión: ${error.message}`;
+        console.error(error);
+      }
+    </script>
+  </body>
+</html>
