@@ -1,0 +1,260 @@
+import type { Lesson, Op, Step } from "./types";
+
+/** Offline fixtures owned by P2; API mocks remain owned by P1. */
+export const demoLesson: Lesson = {
+  id: "board:suma-directa",
+  title: "¿Por qué un medio más un tercio no es dos quintos?",
+  error_code: "SUMA_DIRECTA",
+  level: null,
+  steps: [
+    {
+      say: "Aquí sumaste los de arriba y también los de abajo. Es muy común. Miremos juntos qué pasó.",
+      draw: [
+        {
+          op: "write",
+          text: "Tu primer intento",
+          x: 65,
+          y: 70,
+          size: 30,
+          color: "azul",
+        },
+        { op: "frac", num: "1", den: "2", x: 130, y: 155 },
+        { op: "write", text: "+", x: 195, y: 170, size: 48 },
+        { op: "frac", num: "1", den: "3", x: 275, y: 155 },
+        { op: "write", text: "=", x: 340, y: 170, size: 48 },
+        { op: "frac", num: "2", den: "5", x: 420, y: 155, color: "rojo" },
+        { op: "circle", cx: 420, cy: 155, rx: 46, ry: 65 },
+      ],
+    },
+    {
+      say: "Una mitad de tortilla y un tercio tienen pedazos de distinto tamaño. Antes de sumarlos, necesitamos que los pedazos sean iguales.",
+      draw: [
+        {
+          op: "pie",
+          cx: 170,
+          cy: 365,
+          r: 90,
+          parts: 2,
+          shade: 1,
+          color: "naranja",
+        },
+        {
+          op: "pie",
+          cx: 440,
+          cy: 365,
+          r: 90,
+          parts: 3,
+          shade: 1,
+          color: "azul",
+        },
+        {
+          op: "write",
+          text: "Los pedazos son distintos",
+          x: 610,
+          y: 365,
+          size: 32,
+        },
+        { op: "underline", x: 610, y: 380, w: 300, color: "naranja" },
+      ],
+    },
+    {
+      say: "Partamos ambas tortillas en seis. La mitad ocupa tres sextos. El tercio ocupa dos sextos. Cambia el número de pedazos, pero la cantidad sigue igual.",
+      draw: [
+        { op: "clear" },
+        {
+          op: "write",
+          text: "Ahora sí: pedazos del mismo tamaño",
+          x: 65,
+          y: 75,
+          size: 40,
+        },
+        {
+          op: "pie",
+          cx: 215,
+          cy: 245,
+          r: 100,
+          parts: 6,
+          shade: 3,
+          color: "naranja",
+        },
+        {
+          op: "pie",
+          cx: 630,
+          cy: 245,
+          r: 100,
+          parts: 6,
+          shade: 2,
+          color: "azul",
+        },
+        {
+          op: "write",
+          text: "1/2 = 3/6",
+          x: 125,
+          y: 410,
+          size: 42,
+          color: "naranja",
+        },
+        {
+          op: "write",
+          text: "1/3 = 2/6",
+          x: 540,
+          y: 410,
+          size: 42,
+          color: "azul",
+        },
+      ],
+    },
+    {
+      say: "Tres sextos más dos sextos son cinco sextos. Conservamos el seis porque los pedazos siguen teniendo el mismo tamaño. ¿Cuántos sextos pintamos?",
+      draw: [
+        { op: "clear" },
+        {
+          op: "write",
+          text: "Sumamos pedazos iguales",
+          x: 65,
+          y: 75,
+          size: 42,
+        },
+        {
+          op: "bar",
+          x: 90,
+          y: 160,
+          w: 540,
+          h: 72,
+          parts: 6,
+          shade: 5,
+          color: "verde",
+        },
+        { op: "frac", num: "3", den: "6", x: 160, y: 365 },
+        { op: "write", text: "+", x: 230, y: 381, size: 50 },
+        { op: "frac", num: "2", den: "6", x: 310, y: 365 },
+        { op: "write", text: "=", x: 380, y: 381, size: 50 },
+        { op: "frac", num: "5", den: "6", x: 460, y: 365, color: "verde" },
+        { op: "circle", cx: 460, cy: 365, rx: 48, ry: 64, color: "verde" },
+      ],
+      checkpoint: { prompt: "¿Cuántos sextos pintamos en total?", answer: "5" },
+    },
+    {
+      say: "¡Eso es! Ahora explícalo con tus palabras: ¿por qué necesitamos pedazos del mismo tamaño para sumar fracciones?",
+      draw: [
+        {
+          op: "write",
+          text: "Tu turno: ¿por qué usamos sextos?",
+          x: 85,
+          y: 515,
+          size: 40,
+          color: "azul",
+        },
+      ],
+    },
+  ],
+};
+export const asideSteps: Step[] = [
+  {
+    say: "Veámoslo de otra forma. Esta barra tiene seis pedazos iguales. Tres son una mitad. Para sumar, contamos pedazos del mismo tamaño.",
+    draw: [
+      {
+        op: "write",
+        text: "Vamos de otra forma",
+        x: 70,
+        y: 85,
+        size: 44,
+        color: "azul",
+      },
+      {
+        op: "bar",
+        x: 100,
+        y: 180,
+        w: 600,
+        h: 85,
+        parts: 6,
+        shade: 3,
+        color: "naranja",
+      },
+      { op: "frac", num: "3", den: "6", x: 800, y: 225, color: "naranja" },
+      {
+        op: "write",
+        text: "La misma mitad, en pedazos más pequeños",
+        x: 90,
+        y: 380,
+        size: 38,
+      },
+      {
+        op: "write",
+        text: "¿Ahora sí? Sigamos.",
+        x: 90,
+        y: 475,
+        size: 38,
+        color: "azul",
+      },
+    ],
+  },
+];
+export const operationExamples: Record<Op["op"], { label: string; op: Op }> = {
+  write: {
+    label: "Escritura",
+    op: {
+      op: "write",
+      text: "Vamos paso a paso",
+      x: 120,
+      y: 170,
+      size: 54,
+      color: "azul",
+    },
+  },
+  frac: {
+    label: "Fracción",
+    op: { op: "frac", num: "5", den: "6", x: 500, y: 260, size: 80 },
+  },
+  pie: {
+    label: "Tortilla",
+    op: {
+      op: "pie",
+      cx: 430,
+      cy: 280,
+      r: 170,
+      parts: 6,
+      shade: 5,
+      color: "naranja",
+    },
+  },
+  bar: {
+    label: "Barra",
+    op: {
+      op: "bar",
+      x: 120,
+      y: 225,
+      w: 650,
+      h: 100,
+      parts: 6,
+      shade: 5,
+      color: "azul",
+    },
+  },
+  line: {
+    label: "Línea",
+    op: { op: "line", x1: 150, y1: 200, x2: 800, y2: 350, color: "verde" },
+  },
+  arrow: {
+    label: "Flecha",
+    op: { op: "arrow", x1: 170, y1: 200, x2: 750, y2: 370, color: "azul" },
+  },
+  rect: {
+    label: "Rectángulo",
+    op: { op: "rect", x: 200, y: 150, w: 520, h: 260, color: "morado" },
+  },
+  circle: {
+    label: "Círculo de error",
+    op: { op: "circle", cx: 490, cy: 290, rx: 200, ry: 150 },
+  },
+  underline: {
+    label: "Subrayado",
+    op: { op: "underline", x: 200, y: 330, w: 500, color: "azul" },
+  },
+  cross: {
+    label: "Tachado",
+    op: { op: "cross", x: 300, y: 170, w: 300, h: 250 },
+  },
+  clear: { label: "Borrador", op: { op: "clear" } },
+  wait: { label: "Espera", op: { op: "wait", ms: 1500 } },
+};
