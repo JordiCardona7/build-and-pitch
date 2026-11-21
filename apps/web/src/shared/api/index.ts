@@ -1,3 +1,5 @@
-export { api } from "./client";
-export { ApiError } from "./http";
-export type * from "./types";
+/* Punto de entrada público de shared/api.   DUEÑO: P1 */
+export { api, usingMocks, ApiError } from "./client";
+export type { Api } from "./client";
+export * from "./hooks";
+export * from "./types";

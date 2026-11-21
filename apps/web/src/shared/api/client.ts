@@ -1,101 +1,88 @@
-import { httpForm, httpJson } from "./http";
-import { mockApi } from "./mocks/client";
+/* Único punto de contacto del frontend con el backend.   DUEÑO: P1
+   Uso:  import { api } from "@/shared/api";   (o ruta relativa)
+   Con VITE_USE_MOCKS=true responde con datos simulados (ver ./mocks.ts) sin backend. */
 import type {
-  Assignment,
-  AssignmentKeyResult,
-  Board,
-  ClassRoom,
-  Diagnosis,
-  ErrorCode,
-  MetaResponse,
+  AssignmentOut, Board, ClassDetail, ClassOut, Diagnosis, ErrorCode, Exercise, Lesson, Meta,
+  ProgressEvent, QuizItem, QuizResult, Step, StudentDetail, StudentOut, StudentSummary,
 } from "./types";
+import { mockApi } from "./mocks";
+import { ApiError } from "./errors";
 
-const useMocks = import.meta.env.VITE_USE_MOCKS === "true";
+export { ApiError };
 
-export const api = {
-  getMeta(): Promise<MetaResponse> {
-    return useMocks ? mockApi.getMeta() : httpJson("/meta");
-  },
+const USE_MOCKS = import.meta.env.VITE_USE_MOCKS === "true";
 
-  createClass(name: string): Promise<ClassRoom> {
-    return useMocks
-      ? mockApi.createClass(name)
-      : httpJson("/classes", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name }),
-        });
-  },
+async function req<T>(path: string, init?: RequestInit): Promise<T> {
+  let r: Response;
+  try {
+    r = await fetch(`/api${path}`, init);
+  } catch {
+    throw new ApiError(0, "No hay conexión con el servidor. Revisa tu internet.");
+  }
+  if (!r.ok) {
+    let detail = "Algo se trabó. Probemos otra vez.";
+    try { detail = (await r.json()).detail ?? detail; } catch { /* sin cuerpo JSON */ }
+    throw new ApiError(r.status, detail);
+  }
+  return r.json() as Promise<T>;
+}
+const json = (method: string, body: unknown): RequestInit =>
+  ({ method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+const form = (fields: Record<string, string | Blob | undefined>): RequestInit => {
+  const fd = new FormData();
+  for (const [k, v] of Object.entries(fields)) if (v !== undefined && v !== "") fd.append(k, v);
+  return { method: "POST", body: fd };
+};
 
-  listAssignments(classCode: string): Promise<Assignment[]> {
-    if (useMocks) return mockApi.listAssignments(classCode);
-    // Endpoint de listado no está en contratos; con API real P1 lo define.
-    // Mientras, devolvemos vacío para no inventar rutas.
-    void classCode;
-    return Promise.resolve([]);
-  },
+const realApi = {
+  meta: () => req<Meta>("/meta"),
 
-  createAssignment(
-    classCode: string,
-    body: { key_text?: string; key_image?: File },
-  ): Promise<AssignmentKeyResult> {
-    if (useMocks) return mockApi.createAssignment(classCode, body);
-    const form = new FormData();
-    if (body.key_text) form.append("key_text", body.key_text);
-    if (body.key_image) form.append("key_image", body.key_image);
-    return httpForm(`/classes/${classCode}/assignments`, form);
-  },
+  /* ---- Puerta Aula ---- */
+  createClass: (name: string) => req<ClassOut>("/classes", json("POST", { name })),
+  getClass: (code: string) => req<ClassDetail>(`/classes/${encodeURIComponent(code)}`),
+  /** La clave del docente: texto ("1/2 + 1/3 = 5/6") o foto. */
+  createAssignment: (classCode: string, key: { text?: string; image?: Blob }) =>
+    req<AssignmentOut>(`/classes/${encodeURIComponent(classCode)}/assignments`, form({ key_text: key.text, key_image: key.image })),
+  /** Responde al instante con status "pending"; luego haz polling con getDiagnosis / useDiagnosisPolling. */
+  uploadSheet: (assignmentId: string, image: Blob, studentName?: string) =>
+    req<Diagnosis>(`/assignments/${assignmentId}/sheets`, form({ image, student_name: studentName })),
+  getDiagnosis: (id: string) => req<Diagnosis>(`/diagnoses/${id}`),
+  /** Corrección del docente. error_code null = "lo tiene bien". */
+  patchDiagnosis: (id: string, patch: { error_code: ErrorCode | null; student_name?: string }) =>
+    req<Diagnosis>(`/diagnoses/${id}`, json("PATCH", patch)),
+  getBoard: (assignmentId: string) => req<Board>(`/assignments/${assignmentId}/board`),
+  seedDemo: (classCode: string) => req<Board>("/demo/seed", json("POST", { class_code: classCode })),
 
-  uploadSheet(
-    assignmentId: string,
-    image: File,
-    studentName?: string,
-  ): Promise<Diagnosis> {
-    if (useMocks) return mockApi.uploadSheet(assignmentId, image, studentName);
-    const form = new FormData();
-    form.append("image", image);
-    if (studentName) form.append("student_name", studentName);
-    return httpForm(`/assignments/${assignmentId}/sheets`, form);
-  },
+  /* ---- Puerta Solo ---- */
+  createStudent: (name: string, classCode?: string) => req<StudentOut>("/students", json("POST", { name, class_code: classCode || null })),
+  getStudent: (id: string) => req<StudentDetail>(`/students/${id}`),
+  newProblem: (studentId: string, opts: { target_error?: ErrorCode; difficulty?: 1 | 2 | 3 } = {}) =>
+    req<Exercise>(`/students/${studentId}/problem`, json("POST", opts)),
+  uploadProblemSheet: (studentId: string, exerciseId: string, image: Blob) =>
+    req<Diagnosis>(`/students/${studentId}/problem/${exerciseId}/sheet`, form({ image })),
+  explainQuiz: (studentId: string) => req<{ items: QuizItem[] }>(`/students/${studentId}/explain/quiz`),
+  submitQuiz: (studentId: string, answers: Record<string, string>) =>
+    req<QuizResult>(`/students/${studentId}/explain/quiz`, json("POST", { answers })),
+  progress: (studentId: string, event: ProgressEvent, lessonId: string) =>
+    req<StudentSummary>(`/students/${studentId}/progress`, json("POST", { event, lesson_id: lessonId })),
 
-  getDiagnosis(id: string): Promise<Diagnosis> {
-    return useMocks
-      ? mockApi.getDiagnosis(id)
-      : httpJson(`/diagnoses/${id}`);
-  },
+  /* ---- Lecciones ---- */
+  lessonForDiagnosis: (diagnosisId: string) => req<Lesson>(`/lessons/for-diagnosis/${diagnosisId}`),
+  getLesson: (lessonId: string) => req<Lesson>(`/lessons/${encodeURIComponent(lessonId)}`),
+  ask: (lessonId: string, stepIndex: number, question: string) =>
+    req<{ steps: Step[] }>("/lessons/ask", json("POST", { lesson_id: lessonId, step_index: stepIndex, question })),
+  explainBack: (lessonId: string, transcript: string) =>
+    req<{ feedback: string; understood: boolean }>("/lessons/explain-back", json("POST", { lesson_id: lessonId, transcript })),
 
-  getBoard(assignmentId: string): Promise<Board> {
-    return useMocks
-      ? mockApi.getBoard(assignmentId)
-      : httpJson(`/assignments/${assignmentId}/board`);
-  },
-
-  patchDiagnosis(
-    id: string,
-    body: { error_code: ErrorCode | null; student_name?: string },
-  ): Promise<Diagnosis> {
-    return useMocks
-      ? mockApi.patchDiagnosis(id, body)
-      : httpJson(`/diagnoses/${id}`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        });
-  },
-
-  seedDemo(classCode: string): Promise<Board> {
-    return useMocks
-      ? mockApi.seedDemo(classCode)
-      : httpJson("/demo/seed", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ class_code: classCode }),
-        });
-  },
-
-  getClass(): ClassRoom {
-    return useMocks
-      ? mockApi.getClass()
-      : { code: "MAT-1B", name: "Mi salón" };
+  /* ---- Voz (Grok Voice) ----
+     Devuelve el audio MP3. Lanza ApiError 501 si no está configurada → usar la voz del navegador. */
+  tts: async (text: string, voice?: string): Promise<Blob> => {
+    const r = await fetch("/api/tts", json("POST", { text, voice }));
+    if (!r.ok) throw new ApiError(r.status, "La voz de Grok no está disponible.");
+    return r.blob();
   },
 };
+
+export type Api = typeof realApi;
+export const api: Api = USE_MOCKS ? (mockApi as Api) : realApi;
+export const usingMocks = USE_MOCKS;

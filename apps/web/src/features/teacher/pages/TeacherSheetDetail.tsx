@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { api, type ErrorCode } from "@/shared/api";
+import { api, useMeta, type ErrorCode } from "@/shared/api";
 import {
   Button,
   Card,
@@ -17,10 +17,7 @@ export function TeacherSheetDetail() {
     null,
   );
 
-  const meta = useQuery({
-    queryKey: ["meta"],
-    queryFn: () => api.getMeta(),
-  });
+  const meta = useMeta();
 
   const diagnosis = useQuery({
     queryKey: ["diagnosis", diagnosisId],
@@ -65,7 +62,7 @@ export function TeacherSheetDetail() {
 
   const d = diagnosis.data;
   const activeError = selectedError ?? d.error_code ?? "CORRECTO";
-  const codes = (Object.keys(meta.data?.error_labels ?? {}) as ErrorCode[]) || [];
+  const codes = Object.keys(meta.data?.error_labels ?? {}) as ErrorCode[];
 
   return (
     <main className="mx-auto grid max-w-6xl gap-8 px-4 py-8 lg:grid-cols-2 sm:px-6">
@@ -80,7 +77,7 @@ export function TeacherSheetDetail() {
           {d.student_name}
         </h1>
         <PhotoCard
-          imageUrl={d.image_url}
+          imageUrl={d.image_url || undefined}
           name={d.student_name}
           errorBox={d.error_box}
           statusLabel={d.feedback}

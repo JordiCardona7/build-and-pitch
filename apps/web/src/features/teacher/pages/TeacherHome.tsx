@@ -23,9 +23,9 @@ export function TeacherHome() {
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const assignments = useQuery({
-    queryKey: ["assignments", classroom?.code],
-    queryFn: () => api.listAssignments(classroom!.code),
+  const classDetail = useQuery({
+    queryKey: ["class", classroom?.code],
+    queryFn: () => api.getClass(classroom!.code),
     enabled: Boolean(classroom?.code),
   });
 
@@ -41,7 +41,7 @@ export function TeacherHome() {
 
   const createAssignment = useMutation({
     mutationFn: () =>
-      api.createAssignment(classroom!.code, { key_text: keyText }),
+      api.createAssignment(classroom!.code, { text: keyText }),
     onSuccess: (res) => {
       setKeyPreview({
         id: res.id,
@@ -82,6 +82,8 @@ export function TeacherHome() {
     );
   }
 
+  const assignments = classDetail.data?.assignments ?? [];
+
   return (
     <main className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
       <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
@@ -110,19 +112,19 @@ export function TeacherHome() {
         </div>
       ) : null}
 
-      {assignments.isLoading ? (
+      {classDetail.isLoading ? (
         <ScribbleLoader label="Cargando tareas…" />
-      ) : assignments.isError ? (
+      ) : classDetail.isError ? (
         <EmptyState
           title="No pude cargar las tareas"
           description="Algo se trabó. Probemos otra vez."
           action={
-            <Button variant="secondary" onClick={() => assignments.refetch()}>
+            <Button variant="secondary" onClick={() => classDetail.refetch()}>
               Reintentar
             </Button>
           }
         />
-      ) : !assignments.data?.length ? (
+      ) : !assignments.length ? (
         <EmptyState
           title="Todavía no hay tareas"
           description="Subí la clave del ejercicio y empezá a leer hojas."
@@ -132,13 +134,13 @@ export function TeacherHome() {
         />
       ) : (
         <ul className="space-y-3">
-          {assignments.data.map((a) => (
+          {assignments.map((a) => (
             <li key={a.id}>
               <Link to={`/docente/tarea/${a.id}`}>
                 <Card className="flex items-center justify-between transition hover:border-marker-blue/40">
                   <div>
-                    <p className="font-semibold text-ink">{a.title}</p>
-                    <p className="text-sm text-ink-soft">{a.exercise.text}</p>
+                    <p className="font-semibold text-ink">{a.exercise.text}</p>
+                    <p className="text-sm text-ink-soft">Tarea {a.id}</p>
                   </div>
                   <span className="text-sm font-medium text-marker-blue">
                     Abrir →
@@ -175,7 +177,7 @@ export function TeacherHome() {
             <Button
               onClick={() => {
                 if (!keyPreview) return;
-                void qc.invalidateQueries({ queryKey: ["assignments"] });
+                void qc.invalidateQueries({ queryKey: ["class", classroom.code] });
                 navigate(`/docente/tarea/${keyPreview.id}`);
               }}
             >

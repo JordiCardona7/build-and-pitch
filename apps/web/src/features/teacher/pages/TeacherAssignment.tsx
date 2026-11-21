@@ -1,9 +1,15 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { QRCodeSVG } from "qrcode.react";
-import { api, type Diagnosis, type ErrorCode } from "@/shared/api";
+import {
+  api,
+  useBoardPolling,
+  useMeta,
+  type Diagnosis,
+  type ErrorCode,
+} from "@/shared/api";
 import {
   Button,
   CameraCapture,
@@ -15,7 +21,6 @@ import {
   TrafficLight,
   useToast,
 } from "@/shared/ui";
-import { useBoardPolling } from "../hooks/useBoardPolling";
 import { useProjectorMode } from "../hooks/useProjectorMode";
 import { loadClass } from "../lib/classStorage";
 
@@ -30,17 +35,13 @@ export function TeacherAssignment() {
   const qc = useQueryClient();
   const { toast } = useToast();
   const projector = useProjectorMode();
-  const classroom = loadClass() ?? api.getClass();
+  const classroom = loadClass();
   const [sheets, setSheets] = useState<LocalSheet[]>([]);
   const [shareUrl, setShareUrl] = useState<string | null>(null);
   const prevVerde = useRef<Set<string>>(new Set());
   const verdeReady = useRef(false);
 
-  const meta = useQuery({
-    queryKey: ["meta"],
-    queryFn: () => api.getMeta(),
-  });
-
+  const meta = useMeta();
   const boardQuery = useBoardPolling(assignmentId);
 
   useEffect(() => {
@@ -67,7 +68,11 @@ export function TeacherAssignment() {
   }, [boardQuery.data, toast]);
 
   const seed = useMutation({
-    mutationFn: () => api.seedDemo(classroom.code),
+    mutationFn: () => {
+      const code = classroom?.code ?? boardQuery.data?.class_code;
+      if (!code) throw new Error("No hay código de salón. Creá uno primero.");
+      return api.seedDemo(code);
+    },
     onSuccess: () => {
       void qc.invalidateQueries({ queryKey: ["board", assignmentId] });
       toast("Salón demo cargado");
@@ -152,7 +157,7 @@ export function TeacherAssignment() {
             {boardQuery.data?.exercise.text ?? "Tarea"}
           </h1>
           <p className="text-ink-soft">
-            Salón {classroom.code} · tipografías grandes con tecla P
+            Salón {classroom?.code ?? boardQuery.data?.class_code ?? "—"} · tipografías grandes con tecla P
           </p>
         </div>
         <Button
@@ -183,7 +188,7 @@ export function TeacherAssignment() {
                   className="origin-top"
                 >
                   <PhotoCard
-                    imageUrl={sheet.diagnosis.image_url}
+                    imageUrl={sheet.diagnosis.image_url || undefined}
                     name={sheet.diagnosis.student_name || undefined}
                     pending={sheet.diagnosis.status === "pending"}
                     statusLabel={
@@ -343,11 +348,11 @@ export function TeacherAssignment() {
                 </StickyNote>
               ) : null}
             </div>
-            {!meta.data ? null : (
+            {meta.data ? (
               <p className="text-xs text-ink-soft">
                 Etiquetas desde /meta · demo {meta.data.demo_mode ? "sí" : "no"}
               </p>
-            )}
+            ) : null}
           </>
         ) : null}
       </section>
