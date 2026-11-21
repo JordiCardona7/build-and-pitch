@@ -26,16 +26,26 @@ def _client(timeout: float):
 def extract_json(text: str) -> dict[str, Any]:
     """Saca el primer objeto JSON de la respuesta (tolera ```json ... ``` y texto alrededor)."""
     text = (text or "").strip()
+    blobs = [text]
     fence = re.search(r"```(?:json)?\s*(\{.*\})\s*```", text, re.S)
     if fence:
-        text = fence.group(1)
-    m = re.search(r"\{.*\}", text, re.S)
-    if not m:
-        raise GrokError(f"Grok no devolvió JSON. Respondió: {text[:160]!r}")
-    try:
-        return json.loads(m.group(0))
-    except json.JSONDecodeError as e:
-        raise GrokError(f"JSON inválido de Grok: {e}. Respondió: {text[:160]!r}") from e
+        blobs.insert(0, fence.group(1))
+    decoder = json.JSONDecoder()
+    for blob in blobs:
+        start = 0
+        while True:
+            i = blob.find("{", start)
+            if i < 0:
+                break
+            try:
+                value, _ = decoder.raw_decode(blob[i:])
+            except json.JSONDecodeError:
+                start = i + 1
+                continue
+            if isinstance(value, dict):
+                return value
+            start = i + 1
+    raise GrokError(f"Grok no devolvió JSON. Respondió: {text[:160]!r}")
 
 
 def vision_json(prompt: str, image_jpeg: bytes, system: Optional[str] = None, retries: int = 1) -> dict[str, Any]:

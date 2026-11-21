@@ -92,6 +92,26 @@ def run_ai(image_jpeg: bytes, ex: Exercise) -> dict[str, Any]:
     return vision_json(build_prompt(ex), image_jpeg, system=SYSTEM)
 
 
+def _confidence(value: Any) -> float:
+    try:
+        number = float(str(value).strip().rstrip("%"))
+    except (TypeError, ValueError):
+        return 0.5
+    if number > 1:
+        number = number / 100 if number <= 100 else 1
+    return max(0.0, min(1.0, number))
+
+
+def _error_line(value: Any, count: int, correct: bool) -> Optional[int]:
+    if correct or value is None or isinstance(value, bool):
+        return None
+    try:
+        line = int(value)
+    except (TypeError, ValueError):
+        return None
+    return line if 0 <= line < count else None
+
+
 def merge(ex: Exercise, ai: dict[str, Any]) -> dict[str, Any]:
     """Combina la lectura de la IA con las reglas. Devuelve los campos de Diagnosis (sin id/imagen)."""
     a, b = (ex.a.n, ex.a.d), (ex.b.n, ex.b.d)
@@ -106,7 +126,7 @@ def merge(ex: Exercise, ai: dict[str, Any]) -> dict[str, Any]:
     correct = F.is_correct(a, b, ans)
     rule = F.classify(a, b, ans)
     ai_code = ai.get("error_code") if ai.get("error_code") in ERROR_LABELS else None
-    confidence = float(ai.get("confidence") or 0.5)
+    confidence = _confidence(ai.get("confidence"))
     note = None
 
     if correct:
@@ -123,8 +143,7 @@ def merge(ex: Exercise, ai: dict[str, Any]) -> dict[str, Any]:
         if disagree:
             note = f"La IA leyó «{ERROR_LABELS[ai_code]}»; las reglas dicen «{ERROR_LABELS[rule_code]}»."
 
-    err_line = ai.get("error_line")
-    err_line = int(err_line) if isinstance(err_line, (int, float)) and 0 <= int(err_line) < len(transcript) and not correct else None
+    err_line = _error_line(ai.get("error_line"), len(transcript), correct)
     if err_line is None and not correct:
         bad = [t.index for t in transcript if not t.ok]
         err_line = bad[0] if bad else (len(transcript) - 1 if transcript else None)
