@@ -68,11 +68,30 @@ LESSONS: dict[str, Lesson] = {}        # lecciones servidas (para /lessons/ask)
 
 
 def make_class_code(name: str) -> str:
-    base = "".join(c for c in norm_name(name).upper() if c.isalnum())[:3] or "MAT"
+    """Códigos fáciles de dictar en clase: MAT-194."""
     while True:
-        code = f"{base}-{''.join(random.choices(string.digits, k=3))}"
-        if code not in CLASSES:
+        code = f"MAT-{''.join(random.choices(string.digits, k=3))}"
+        if code not in CLASSES and not any(c.endswith(code[-3:]) for c in CLASSES):
             return code
+
+
+def _code_key(code: str) -> str:
+    return "".join(ch for ch in (code or "").upper() if ch.isalnum())
+
+
+def find_class_code(typed: str) -> Optional[str]:
+    """Acepta 'MAT-194', 'mat194', 'mat 194' o solo '194'."""
+    key = _code_key(typed)
+    if not key:
+        return None
+    for code in CLASSES:
+        if _code_key(code) == key:
+            return code
+    if key.isdigit():
+        hits = [c for c in CLASSES if "".join(ch for ch in c if ch.isdigit()) == key]
+        if len(hits) == 1:
+            return hits[0]
+    return None
 
 
 def find_or_create_student(name: str, class_code: Optional[str], source: str) -> StudentRec:

@@ -11,7 +11,7 @@ from ..services import demo, sheets, vision
 from ..services import fractions as F
 from ..services.grok import GrokError
 from ..services.problems import make_exercise
-from ..store import ASSIGNMENTS, CLASSES, DIAGNOSES, LOCK, STUDENTS, AssignmentRec, ClassRec, make_class_code, new_id
+from ..store import ASSIGNMENTS, CLASSES, DIAGNOSES, LOCK, STUDENTS, AssignmentRec, ClassRec, find_class_code, make_class_code, new_id
 
 router = APIRouter(tags=["aula"])
 MAX_BYTES = 12 * 1024 * 1024
@@ -37,11 +37,11 @@ def create_class(body: ClassIn):
 @router.get("/classes/{code}")
 def get_class(code: str):
     """Adicional al contrato: el salón y sus tareas (para la pantalla 'Mis tareas')."""
-    c = CLASSES.get(code)
+    c = CLASSES.get(find_class_code(code) or code)
     if not c:
         raise HTTPException(404, "No encontré ese salón.")
     return {"code": c.code, "name": c.name,
-            "assignments": [{"id": a.id, "exercise": a.exercise.model_dump()} for a in ASSIGNMENTS.values() if a.class_code == code]}
+            "assignments": [{"id": a.id, "exercise": a.exercise.model_dump()} for a in ASSIGNMENTS.values() if a.class_code == c.code]}
 
 
 @router.post("/classes/{code}/assignments", response_model=AssignmentOut)
