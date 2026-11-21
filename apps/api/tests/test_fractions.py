@@ -24,3 +24,12 @@ def test_parse_and_words():
     assert F.frac_words(1, 2) == "un medio"
     assert F.frac_words(5, 6) == "cinco sextos"
     assert F.frac_words(2, 5) == "dos quintos"
+
+
+def test_first_wrong_line():
+    from fractions import Fraction
+    r = Fraction(5, 6)
+    assert F.first_wrong_line(["1/2 + 1/3", "= 2/5"], r) == 1
+    assert F.first_wrong_line(["1/2 + 1/3", "= 1/6 + 1/6", "= 2/6"], r) == 1
+    assert F.first_wrong_line(["1/2 + 1/3", "= 3/6 + 2/6", "= 5/12"], r) == 2
+    assert F.first_wrong_line(["1/2 + 1/3", "= 3/6 + 2/6", "= 5/6"], r) is None

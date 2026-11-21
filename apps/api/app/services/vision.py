@@ -67,25 +67,15 @@ SYSTEM = "Eres una maestra guatemalteca de matemática de 1ro básico, experta e
 
 
 def build_prompt(ex: Exercise) -> str:
-    right = F.correct_sum((ex.a.n, ex.a.d), (ex.b.n, ex.b.d))
-    return f"""Esta es la foto de la hoja de un alumno que resolvió: {ex.text}
-La respuesta correcta es {right.numerator}/{right.denominator} (equivalentes también son correctas).
-
-Haz esto:
-1. Transcribe, renglón por renglón y en orden, lo que escribió el alumno para ESTE ejercicio (fracciones como a/b). Ignora tachones y garabatos.
-2. Si aparece el nombre del alumno en la hoja, léelo.
-3. Indica su respuesta final.
-4. Marca cada renglón como correcto o no, y di el índice del PRIMER renglón equivocado.
-5. Elige UN código de error (si está mal) de esta lista:
-{TAXONOMY}
-6. Escribe "feedback": UNA frase corta, cálida, de tú, para el alumno, que diga dónde se confundió sin darle la respuesta.
-7. "confidence" de 0 a 1: qué tan seguro estás de haber leído bien la hoja.
-8. "error_box": caja aproximada del renglón equivocado, en proporciones de la imagen (0 a 1), o null.
-
-Responde SOLO con este JSON:
-{{"student_name": "texto o null", "lines": [{{"text": "1/2 + 1/3", "ok": true}}], "final_answer": "a/b o null",
- "error_line": 0, "error_code": "CODIGO o null", "feedback": "...", "confidence": 0.9,
- "error_box": {{"x": 0.1, "y": 0.4, "w": 0.6, "h": 0.1}}}}"""
+    """Solo TRANSCRIBIR (rápido y confiable). El diagnóstico lo hacen las reglas de fracciones."""
+    return f"""Foto de la hoja de un alumno que resolvió: {ex.text}
+Transcribe EXACTAMENTE lo que escribió el alumno para este ejercicio, renglón por renglón y en orden, aunque esté mal.
+No corrijas nada. Fracciones como a/b, multiplicaciones con ×. Ignora tachones y garabatos.
+Si aparece el nombre del alumno, léelo.
+Para cada renglón da su caja aproximada en proporciones de la imagen (0 a 1).
+Responde SOLO este JSON:
+{{"student_name": "nombre o null", "lines": [{{"text": "1/2 + 1/3", "box": {{"x": 0.1, "y": 0.2, "w": 0.6, "h": 0.08}}}}],
+ "final_answer": "a/b o null", "confidence": 0.9}}"""
 
 
 def run_ai(image_jpeg: bytes, ex: Exercise) -> dict[str, Any]:
@@ -145,6 +135,8 @@ def merge(ex: Exercise, ai: dict[str, Any]) -> dict[str, Any]:
 
     err_line = _error_line(ai.get("error_line"), len(transcript), correct)
     if err_line is None and not correct:
+        err_line = F.first_wrong_line([t.text for t in transcript], F.correct_sum(a, b))
+    if err_line is None and not correct:
         bad = [t.index for t in transcript if not t.ok]
         err_line = bad[0] if bad else (len(transcript) - 1 if transcript else None)
     if err_line is not None:
@@ -153,6 +145,8 @@ def merge(ex: Exercise, ai: dict[str, Any]) -> dict[str, Any]:
 
     box = None
     eb = ai.get("error_box")
+    if eb is None and err_line is not None and not correct and err_line < len(lines):
+        eb = lines[err_line].get("box")
     if not correct and isinstance(eb, dict):
         try:
             box = Box(**{k: max(0.0, min(1.0, float(eb[k]))) for k in ("x", "y", "w", "h")})
