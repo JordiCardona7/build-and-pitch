@@ -1,28 +1,28 @@
-# Reemplaza @p1-usuario, etc. por los usuarios de GitHub del equipo.
-*                                   @p1-usuario
-/docs/CONTRACTS.md                  @p1-usuario
-/apps/api/                          @p1-usuario
-/apps/web/src/shared/api/           @p1-usuario
+# Dueños por carpeta (ver docs/WORKFLOW.md).
+*                                   @JordiCardona7
+/docs/CONTRACTS.md                  @JordiCardona7
+/apps/api/                          @JordiCardona7
+/apps/web/src/shared/api/           @JordiCardona7
 
-/apps/web/src/features/board/       @p2-usuario
-/apps/web/src/pages/sandbox/BoardSandbox.tsx  @p2-usuario
-/apps/web/public/board/             @p2-usuario
+/apps/web/src/features/board/       @S3rgi07
+/apps/web/src/pages/sandbox/BoardSandbox.tsx  @S3rgi07
+/apps/web/public/board/             @S3rgi07
 
-/apps/web/src/features/teacher/     @p3-usuario
-/apps/web/src/shared/ui/            @p3-usuario
-/apps/web/src/shared/brand.ts       @p3-usuario
-/apps/web/src/styles/               @p3-usuario
-/apps/web/src/app/                  @p3-usuario
-/apps/web/src/pages/Landing.tsx     @p3-usuario
-/apps/web/tailwind.config.ts        @p3-usuario
-/docs/DESIGN.md                     @p3-usuario
+/apps/web/src/features/teacher/     @its-tony
+/apps/web/src/shared/ui/            @its-tony
+/apps/web/src/shared/brand.ts       @its-tony
+/apps/web/src/styles/               @its-tony
+/apps/web/src/app/                  @its-tony
+/apps/web/src/pages/Landing.tsx     @its-tony
+/apps/web/tailwind.config.ts        @its-tony
+/docs/DESIGN.md                     @its-tony
 
-/apps/web/src/features/student/     @p4-usuario
-/apps/web/src/features/interact/    @p4-usuario
-/apps/web/src/pages/sandbox/InteractSandbox.tsx  @p4-usuario
+/apps/web/src/features/student/     @vaalss
+/apps/web/src/features/interact/    @vaalss
+/apps/web/src/pages/sandbox/InteractSandbox.tsx  @vaalss
 
 # Compartidos: requieren aviso en el grupo
-/apps/web/package.json              @p1-usuario @p2-usuario @p3-usuario @p4-usuario
-/apps/web/package-lock.json         @p1-usuario @p2-usuario @p3-usuario @p4-usuario
-/PRD.md                             @p1-usuario @p2-usuario @p3-usuario @p4-usuario
-/AGENTS.md                          @p1-usuario @p2-usuario @p3-usuario @p4-usuario
+/apps/web/package.json              @JordiCardona7 @S3rgi07 @its-tony @vaalss
+/apps/web/package-lock.json         @JordiCardona7 @S3rgi07 @its-tony @vaalss
+/PRD.md                             @JordiCardona7 @S3rgi07 @its-tony @vaalss
+/AGENTS.md                          @JordiCardona7 @S3rgi07 @its-tony @vaalss
