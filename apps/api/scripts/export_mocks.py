@@ -19,13 +19,13 @@ config.XAI_API_KEY = ""          # los respaldos sin IA (ask, explain-back) tamb
 
 
 def sheet_svg(name: str, lines: list[str]) -> str:
-    """Hoja de cuaderno con letra 'a mano' para que las pantallas se vean reales con mocks."""
-    rows = "".join(f'<text x="70" y="{150 + i * 64}" font-size="40">{t}</text>' for i, t in enumerate(lines))
-    rules = "".join(f'<line x1="0" x2="600" y1="{70 + i * 32}" y2="{70 + i * 32}" stroke="#c9dcf0" stroke-width="1.5"/>' for i in range(16))
-    svg = (f'<svg xmlns="http://www.w3.org/2000/svg" width="600" height="560" viewBox="0 0 600 560">'
-           f'<rect width="600" height="560" fill="#fffdf6"/>{rules}<line x1="52" x2="52" y1="0" y2="560" stroke="#f3a3a3" stroke-width="2"/>'
+    """Hoja de cuaderno vertical (3:4) con letra 'a mano', para que las pantallas se vean reales con mocks."""
+    rows = "".join(f'<text x="110" y="{230 + i * 72}" font-size="44">{t}</text>' for i, t in enumerate(lines))
+    rules = "".join(f'<line x1="0" x2="600" y1="{110 + i * 36}" y2="{110 + i * 36}" stroke="#c9dcf0" stroke-width="1.5"/>' for i, _ in enumerate(range(20)))
+    svg = (f'<svg xmlns="http://www.w3.org/2000/svg" width="600" height="800" viewBox="0 0 600 800">'
+           f'<rect width="600" height="800" fill="#fffdf6"/>{rules}<line x1="80" x2="80" y1="0" y2="800" stroke="#f3a3a3" stroke-width="2"/>'
            f'<g font-family="Segoe Print, Bradley Hand, Comic Sans MS, cursive" fill="#22304f">'
-           f'<text x="70" y="70" font-size="30">{name}</text>{rows}</g></svg>')
+           f'<text x="110" y="120" font-size="36">{name}</text>{rows}</g></svg>')
     return "data:image/svg+xml;utf8," + quote(svg)
 
 
@@ -57,7 +57,7 @@ def main() -> None:
         vision.run_ai = (lambda ans=ans, code=code, lines=lines, name=name: (lambda _i, _e: {
             "student_name": name, "lines": [{"text": t, "ok": True} for t in lines], "final_answer": ans,
             "error_line": len(lines) - 1 if code else None, "error_code": code,
-            "feedback": "", "confidence": 0.93, "error_box": {"x": 0.08, "y": 0.18 + 0.115 * (len(lines) - 1), "w": 0.55, "h": 0.11}}))()
+            "feedback": "", "confidence": 0.93, "error_box": {"x": 0.14, "y": (180 + 72 * (len(lines) - 1)) / 800, "w": 0.5, "h": 0.085}}))()
         d = c.post(f"/api/assignments/{asg['id']}/sheets", files={"image": (f"{i}.jpg", jpeg(i), "image/jpeg")}).json()
         d = c.get(f"/api/diagnoses/{d['id']}").json()
         d["image_url"] = sheet_svg(name, lines)

@@ -19,13 +19,13 @@
   "demo_mode": true
  },
  "class": {
-  "code": "1RO-316",
+  "code": "MAT-316",
   "name": "1ro Básico B"
  },
  "assignment": {
-  "id": "as_e3570d923f",
+  "id": "as_1de4d4349e",
   "exercise": {
-   "id": "ex_8a2d8d556e",
+   "id": "ex_59b76f2f8a",
    "a": {
     "n": 1,
     "d": 2
@@ -60,11 +60,11 @@
  },
  "diagnoses": [
   {
-   "id": "dg_a739beb9a3",
+   "id": "dg_8e0b0a2b0b",
    "status": "done",
    "student_name": "Kevin",
    "exercise": {
-    "id": "ex_8a2d8d556e",
+    "id": "ex_59b76f2f8a",
     "a": {
      "n": 1,
      "d": 2
@@ -75,7 +75,7 @@
     },
     "text": "1/2 + 1/3"
    },
-   "image_url": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22600%22%20height%3D%22560%22%20viewBox%3D%220%200%20600%20560%22%3E%3Crect%20width%3D%22600%22%20height%3D%22560%22%20fill%3D%22%23fffdf6%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%2270%22%20y2%3D%2270%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22102%22%20y2%3D%22102%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22134%22%20y2%3D%22134%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22166%22%20y2%3D%22166%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22198%22%20y2%3D%22198%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22230%22%20y2%3D%22230%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22262%22%20y2%3D%22262%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22294%22%20y2%3D%22294%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22326%22%20y2%3D%22326%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22358%22%20y2%3D%22358%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22390%22%20y2%3D%22390%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22422%22%20y2%3D%22422%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22454%22%20y2%3D%22454%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22486%22%20y2%3D%22486%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22518%22%20y2%3D%22518%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22550%22%20y2%3D%22550%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%2252%22%20x2%3D%2252%22%20y1%3D%220%22%20y2%3D%22560%22%20stroke%3D%22%23f3a3a3%22%20stroke-width%3D%222%22/%3E%3Cg%20font-family%3D%22Segoe%20Print%2C%20Bradley%20Hand%2C%20Comic%20Sans%20MS%2C%20cursive%22%20fill%3D%22%2322304f%22%3E%3Ctext%20x%3D%2270%22%20y%3D%2270%22%20font-size%3D%2230%22%3EKevin%3C/text%3E%3Ctext%20x%3D%2270%22%20y%3D%22150%22%20font-size%3D%2240%22%3E1/2%20%2B%201/3%3C/text%3E%3Ctext%20x%3D%2270%22%20y%3D%22214%22%20font-size%3D%2240%22%3E%3D%202/5%3C/text%3E%3C/g%3E%3C/svg%3E",
+   "image_url": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22600%22%20height%3D%22800%22%20viewBox%3D%220%200%20600%20800%22%3E%3Crect%20width%3D%22600%22%20height%3D%22800%22%20fill%3D%22%23fffdf6%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22110%22%20y2%3D%22110%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22146%22%20y2%3D%22146%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22182%22%20y2%3D%22182%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22218%22%20y2%3D%22218%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22254%22%20y2%3D%22254%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22290%22%20y2%3D%22290%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22326%22%20y2%3D%22326%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22362%22%20y2%3D%22362%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22398%22%20y2%3D%22398%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22434%22%20y2%3D%22434%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22470%22%20y2%3D%22470%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22506%22%20y2%3D%22506%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22542%22%20y2%3D%22542%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22578%22%20y2%3D%22578%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22614%22%20y2%3D%22614%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22650%22%20y2%3D%22650%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22686%22%20y2%3D%22686%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22722%22%20y2%3D%22722%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22758%22%20y2%3D%22758%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22794%22%20y2%3D%22794%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%2280%22%20x2%3D%2280%22%20y1%3D%220%22%20y2%3D%22800%22%20stroke%3D%22%23f3a3a3%22%20stroke-width%3D%222%22/%3E%3Cg%20font-family%3D%22Segoe%20Print%2C%20Bradley%20Hand%2C%20Comic%20Sans%20MS%2C%20cursive%22%20fill%3D%22%2322304f%22%3E%3Ctext%20x%3D%22110%22%20y%3D%22120%22%20font-size%3D%2236%22%3EKevin%3C/text%3E%3Ctext%20x%3D%22110%22%20y%3D%22230%22%20font-size%3D%2244%22%3E1/2%20%2B%201/3%3C/text%3E%3Ctext%20x%3D%22110%22%20y%3D%22302%22%20font-size%3D%2244%22%3E%3D%202/5%3C/text%3E%3C/g%3E%3C/svg%3E",
    "transcript": [
     {
      "index": 0,
@@ -107,11 +107,11 @@
    "note": null
   },
   {
-   "id": "dg_aa1ce8dc57",
+   "id": "dg_70cc494a5f",
    "status": "done",
    "student_name": "Sofía",
    "exercise": {
-    "id": "ex_8a2d8d556e",
+    "id": "ex_59b76f2f8a",
     "a": {
      "n": 1,
      "d": 2
@@ -122,7 +122,7 @@
     },
     "text": "1/2 + 1/3"
    },
-   "image_url": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22600%22%20height%3D%22560%22%20viewBox%3D%220%200%20600%20560%22%3E%3Crect%20width%3D%22600%22%20height%3D%22560%22%20fill%3D%22%23fffdf6%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%2270%22%20y2%3D%2270%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22102%22%20y2%3D%22102%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22134%22%20y2%3D%22134%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22166%22%20y2%3D%22166%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22198%22%20y2%3D%22198%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22230%22%20y2%3D%22230%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22262%22%20y2%3D%22262%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22294%22%20y2%3D%22294%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22326%22%20y2%3D%22326%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22358%22%20y2%3D%22358%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22390%22%20y2%3D%22390%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22422%22%20y2%3D%22422%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22454%22%20y2%3D%22454%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22486%22%20y2%3D%22486%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22518%22%20y2%3D%22518%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22550%22%20y2%3D%22550%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%2252%22%20x2%3D%2252%22%20y1%3D%220%22%20y2%3D%22560%22%20stroke%3D%22%23f3a3a3%22%20stroke-width%3D%222%22/%3E%3Cg%20font-family%3D%22Segoe%20Print%2C%20Bradley%20Hand%2C%20Comic%20Sans%20MS%2C%20cursive%22%20fill%3D%22%2322304f%22%3E%3Ctext%20x%3D%2270%22%20y%3D%2270%22%20font-size%3D%2230%22%3ESof%C3%ADa%3C/text%3E%3Ctext%20x%3D%2270%22%20y%3D%22150%22%20font-size%3D%2240%22%3E1/2%20%2B%201/3%3C/text%3E%3Ctext%20x%3D%2270%22%20y%3D%22214%22%20font-size%3D%2240%22%3E%3D%201/6%20%2B%201/6%3C/text%3E%3Ctext%20x%3D%2270%22%20y%3D%22278%22%20font-size%3D%2240%22%3E%3D%202/6%3C/text%3E%3C/g%3E%3C/svg%3E",
+   "image_url": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22600%22%20height%3D%22800%22%20viewBox%3D%220%200%20600%20800%22%3E%3Crect%20width%3D%22600%22%20height%3D%22800%22%20fill%3D%22%23fffdf6%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22110%22%20y2%3D%22110%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22146%22%20y2%3D%22146%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22182%22%20y2%3D%22182%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22218%22%20y2%3D%22218%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22254%22%20y2%3D%22254%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22290%22%20y2%3D%22290%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22326%22%20y2%3D%22326%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22362%22%20y2%3D%22362%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22398%22%20y2%3D%22398%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22434%22%20y2%3D%22434%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22470%22%20y2%3D%22470%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22506%22%20y2%3D%22506%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22542%22%20y2%3D%22542%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22578%22%20y2%3D%22578%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22614%22%20y2%3D%22614%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22650%22%20y2%3D%22650%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22686%22%20y2%3D%22686%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22722%22%20y2%3D%22722%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22758%22%20y2%3D%22758%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22794%22%20y2%3D%22794%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%2280%22%20x2%3D%2280%22%20y1%3D%220%22%20y2%3D%22800%22%20stroke%3D%22%23f3a3a3%22%20stroke-width%3D%222%22/%3E%3Cg%20font-family%3D%22Segoe%20Print%2C%20Bradley%20Hand%2C%20Comic%20Sans%20MS%2C%20cursive%22%20fill%3D%22%2322304f%22%3E%3Ctext%20x%3D%22110%22%20y%3D%22120%22%20font-size%3D%2236%22%3ESof%C3%ADa%3C/text%3E%3Ctext%20x%3D%22110%22%20y%3D%22230%22%20font-size%3D%2244%22%3E1/2%20%2B%201/3%3C/text%3E%3Ctext%20x%3D%22110%22%20y%3D%22302%22%20font-size%3D%2244%22%3E%3D%201/6%20%2B%201/6%3C/text%3E%3Ctext%20x%3D%22110%22%20y%3D%22374%22%20font-size%3D%2244%22%3E%3D%202/6%3C/text%3E%3C/g%3E%3C/svg%3E",
    "transcript": [
     {
      "index": 0,
@@ -159,11 +159,11 @@
    "note": null
   },
   {
-   "id": "dg_b9751caff4",
+   "id": "dg_5d2e851aff",
    "status": "done",
    "student_name": "Ana Lucía",
    "exercise": {
-    "id": "ex_8a2d8d556e",
+    "id": "ex_59b76f2f8a",
     "a": {
      "n": 1,
      "d": 2
@@ -174,7 +174,7 @@
     },
     "text": "1/2 + 1/3"
    },
-   "image_url": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22600%22%20height%3D%22560%22%20viewBox%3D%220%200%20600%20560%22%3E%3Crect%20width%3D%22600%22%20height%3D%22560%22%20fill%3D%22%23fffdf6%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%2270%22%20y2%3D%2270%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22102%22%20y2%3D%22102%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22134%22%20y2%3D%22134%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22166%22%20y2%3D%22166%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22198%22%20y2%3D%22198%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22230%22%20y2%3D%22230%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22262%22%20y2%3D%22262%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22294%22%20y2%3D%22294%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22326%22%20y2%3D%22326%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22358%22%20y2%3D%22358%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22390%22%20y2%3D%22390%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22422%22%20y2%3D%22422%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22454%22%20y2%3D%22454%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22486%22%20y2%3D%22486%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22518%22%20y2%3D%22518%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22550%22%20y2%3D%22550%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%2252%22%20x2%3D%2252%22%20y1%3D%220%22%20y2%3D%22560%22%20stroke%3D%22%23f3a3a3%22%20stroke-width%3D%222%22/%3E%3Cg%20font-family%3D%22Segoe%20Print%2C%20Bradley%20Hand%2C%20Comic%20Sans%20MS%2C%20cursive%22%20fill%3D%22%2322304f%22%3E%3Ctext%20x%3D%2270%22%20y%3D%2270%22%20font-size%3D%2230%22%3EAna%20Luc%C3%ADa%3C/text%3E%3Ctext%20x%3D%2270%22%20y%3D%22150%22%20font-size%3D%2240%22%3E1/2%20%2B%201/3%3C/text%3E%3Ctext%20x%3D%2270%22%20y%3D%22214%22%20font-size%3D%2240%22%3E%3D%203/6%20%2B%202/6%3C/text%3E%3Ctext%20x%3D%2270%22%20y%3D%22278%22%20font-size%3D%2240%22%3E%3D%205/6%3C/text%3E%3C/g%3E%3C/svg%3E",
+   "image_url": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22600%22%20height%3D%22800%22%20viewBox%3D%220%200%20600%20800%22%3E%3Crect%20width%3D%22600%22%20height%3D%22800%22%20fill%3D%22%23fffdf6%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22110%22%20y2%3D%22110%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22146%22%20y2%3D%22146%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22182%22%20y2%3D%22182%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22218%22%20y2%3D%22218%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22254%22%20y2%3D%22254%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22290%22%20y2%3D%22290%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22326%22%20y2%3D%22326%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22362%22%20y2%3D%22362%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22398%22%20y2%3D%22398%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22434%22%20y2%3D%22434%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22470%22%20y2%3D%22470%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22506%22%20y2%3D%22506%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22542%22%20y2%3D%22542%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22578%22%20y2%3D%22578%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22614%22%20y2%3D%22614%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22650%22%20y2%3D%22650%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22686%22%20y2%3D%22686%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22722%22%20y2%3D%22722%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22758%22%20y2%3D%22758%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22794%22%20y2%3D%22794%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%2280%22%20x2%3D%2280%22%20y1%3D%220%22%20y2%3D%22800%22%20stroke%3D%22%23f3a3a3%22%20stroke-width%3D%222%22/%3E%3Cg%20font-family%3D%22Segoe%20Print%2C%20Bradley%20Hand%2C%20Comic%20Sans%20MS%2C%20cursive%22%20fill%3D%22%2322304f%22%3E%3Ctext%20x%3D%22110%22%20y%3D%22120%22%20font-size%3D%2236%22%3EAna%20Luc%C3%ADa%3C/text%3E%3Ctext%20x%3D%22110%22%20y%3D%22230%22%20font-size%3D%2244%22%3E1/2%20%2B%201/3%3C/text%3E%3Ctext%20x%3D%22110%22%20y%3D%22302%22%20font-size%3D%2244%22%3E%3D%203/6%20%2B%202/6%3C/text%3E%3Ctext%20x%3D%22110%22%20y%3D%22374%22%20font-size%3D%2244%22%3E%3D%205/6%3C/text%3E%3C/g%3E%3C/svg%3E",
    "transcript": [
     {
      "index": 0,
@@ -207,11 +207,11 @@
   }
  ],
  "pending_diagnosis": {
-  "id": "dg_a739beb9a3",
+  "id": "dg_8e0b0a2b0b",
   "status": "pending",
   "student_name": "",
   "exercise": {
-   "id": "ex_8a2d8d556e",
+   "id": "ex_59b76f2f8a",
    "a": {
     "n": 1,
     "d": 2
@@ -222,7 +222,7 @@
    },
    "text": "1/2 + 1/3"
   },
-  "image_url": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22600%22%20height%3D%22560%22%20viewBox%3D%220%200%20600%20560%22%3E%3Crect%20width%3D%22600%22%20height%3D%22560%22%20fill%3D%22%23fffdf6%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%2270%22%20y2%3D%2270%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22102%22%20y2%3D%22102%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22134%22%20y2%3D%22134%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22166%22%20y2%3D%22166%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22198%22%20y2%3D%22198%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22230%22%20y2%3D%22230%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22262%22%20y2%3D%22262%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22294%22%20y2%3D%22294%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22326%22%20y2%3D%22326%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22358%22%20y2%3D%22358%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22390%22%20y2%3D%22390%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22422%22%20y2%3D%22422%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22454%22%20y2%3D%22454%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22486%22%20y2%3D%22486%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22518%22%20y2%3D%22518%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22550%22%20y2%3D%22550%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%2252%22%20x2%3D%2252%22%20y1%3D%220%22%20y2%3D%22560%22%20stroke%3D%22%23f3a3a3%22%20stroke-width%3D%222%22/%3E%3Cg%20font-family%3D%22Segoe%20Print%2C%20Bradley%20Hand%2C%20Comic%20Sans%20MS%2C%20cursive%22%20fill%3D%22%2322304f%22%3E%3Ctext%20x%3D%2270%22%20y%3D%2270%22%20font-size%3D%2230%22%3EKevin%3C/text%3E%3Ctext%20x%3D%2270%22%20y%3D%22150%22%20font-size%3D%2240%22%3E1/2%20%2B%201/3%3C/text%3E%3Ctext%20x%3D%2270%22%20y%3D%22214%22%20font-size%3D%2240%22%3E%3D%202/5%3C/text%3E%3C/g%3E%3C/svg%3E",
+  "image_url": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22600%22%20height%3D%22800%22%20viewBox%3D%220%200%20600%20800%22%3E%3Crect%20width%3D%22600%22%20height%3D%22800%22%20fill%3D%22%23fffdf6%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22110%22%20y2%3D%22110%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22146%22%20y2%3D%22146%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22182%22%20y2%3D%22182%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22218%22%20y2%3D%22218%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22254%22%20y2%3D%22254%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22290%22%20y2%3D%22290%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22326%22%20y2%3D%22326%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22362%22%20y2%3D%22362%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22398%22%20y2%3D%22398%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22434%22%20y2%3D%22434%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22470%22%20y2%3D%22470%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22506%22%20y2%3D%22506%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22542%22%20y2%3D%22542%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22578%22%20y2%3D%22578%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22614%22%20y2%3D%22614%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22650%22%20y2%3D%22650%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22686%22%20y2%3D%22686%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22722%22%20y2%3D%22722%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22758%22%20y2%3D%22758%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22794%22%20y2%3D%22794%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%2280%22%20x2%3D%2280%22%20y1%3D%220%22%20y2%3D%22800%22%20stroke%3D%22%23f3a3a3%22%20stroke-width%3D%222%22/%3E%3Cg%20font-family%3D%22Segoe%20Print%2C%20Bradley%20Hand%2C%20Comic%20Sans%20MS%2C%20cursive%22%20fill%3D%22%2322304f%22%3E%3Ctext%20x%3D%22110%22%20y%3D%22120%22%20font-size%3D%2236%22%3EKevin%3C/text%3E%3Ctext%20x%3D%22110%22%20y%3D%22230%22%20font-size%3D%2244%22%3E1/2%20%2B%201/3%3C/text%3E%3Ctext%20x%3D%22110%22%20y%3D%22302%22%20font-size%3D%2244%22%3E%3D%202/5%3C/text%3E%3C/g%3E%3C/svg%3E",
   "transcript": [],
   "final_answer": null,
   "correct": false,
@@ -235,10 +235,10 @@
   "note": null
  },
  "board": {
-  "class_code": "1RO-316",
-  "assignment_id": "as_e3570d923f",
+  "class_code": "MAT-316",
+  "assignment_id": "as_1de4d4349e",
   "exercise": {
-   "id": "ex_8a2d8d556e",
+   "id": "ex_59b76f2f8a",
    "a": {
     "n": 1,
     "d": 2
@@ -262,120 +262,120 @@
     "label": "sumaron también los de abajo",
     "students": [
      {
-      "id": "st_ef29c94996",
+      "id": "st_8d86e19f63",
       "name": "Andrés",
       "status": "rojo",
       "error_code": "SUMA_DIRECTA",
       "stars": 0,
-      "last_diagnosis_id": "dg_a9d4c7a746",
+      "last_diagnosis_id": "dg_4ca2f46c2a",
       "source": "demo"
      },
      {
-      "id": "st_e48ed35f21",
+      "id": "st_c778bae629",
       "name": "Cristian",
       "status": "rojo",
       "error_code": "SUMA_DIRECTA",
       "stars": 1,
-      "last_diagnosis_id": "dg_ab537132ba",
+      "last_diagnosis_id": "dg_44467442ea",
       "source": "demo"
      },
      {
-      "id": "st_e99a70334d",
+      "id": "st_864bb67544",
       "name": "Diego",
       "status": "rojo",
       "error_code": "SUMA_DIRECTA",
       "stars": 1,
-      "last_diagnosis_id": "dg_ae9a53d591",
+      "last_diagnosis_id": "dg_9242510cc8",
       "source": "demo"
      },
      {
-      "id": "st_5e7d32a377",
+      "id": "st_c5deda3643",
       "name": "Kevin",
       "status": "rojo",
       "error_code": "SUMA_DIRECTA",
       "stars": 0,
-      "last_diagnosis_id": "dg_a739beb9a3",
+      "last_diagnosis_id": "dg_8e0b0a2b0b",
       "source": "aula"
      },
      {
-      "id": "st_b34b590c08",
+      "id": "st_5753cfb3b2",
       "name": "María Fernanda",
       "status": "rojo",
       "error_code": "SUMA_DIRECTA",
       "stars": 1,
-      "last_diagnosis_id": "dg_48dba91c4f",
+      "last_diagnosis_id": "dg_6be43eaff9",
       "source": "demo"
      },
      {
-      "id": "st_1f6bcd70fd",
+      "id": "st_5fbe110658",
       "name": "Valeria",
       "status": "rojo",
       "error_code": "SUMA_DIRECTA",
       "stars": 1,
-      "last_diagnosis_id": "dg_70e4daa89e",
+      "last_diagnosis_id": "dg_dc16ef501a",
       "source": "demo"
      },
      {
-      "id": "st_40f7e486a8",
+      "id": "st_9d224c9646",
       "name": "Ximena",
       "status": "rojo",
       "error_code": "SUMA_DIRECTA",
       "stars": 3,
-      "last_diagnosis_id": "dg_2493e8c6ce",
+      "last_diagnosis_id": "dg_0c74ecd1a0",
       "source": "demo"
      },
      {
-      "id": "st_d02b8d2dd5",
+      "id": "st_c2bb373dac",
       "name": "Óscar",
       "status": "rojo",
       "error_code": "SUMA_DIRECTA",
       "stars": 1,
-      "last_diagnosis_id": "dg_544b6fd4f9",
+      "last_diagnosis_id": "dg_1acb396ccb",
       "source": "demo"
      },
      {
-      "id": "st_458f430657",
+      "id": "st_2129a0996a",
       "name": "Andrea",
       "status": "amarillo",
       "error_code": "SUMA_DIRECTA",
       "stars": 1,
-      "last_diagnosis_id": "dg_80c52d2b68",
+      "last_diagnosis_id": "dg_862f7af9a4",
       "source": "demo"
      },
      {
-      "id": "st_1a61d7834d",
+      "id": "st_1f86522d51",
       "name": "Fernando",
       "status": "amarillo",
       "error_code": "SUMA_DIRECTA",
       "stars": 2,
-      "last_diagnosis_id": "dg_745c7a09bc",
+      "last_diagnosis_id": "dg_402d2209ba",
       "source": "demo"
      },
      {
-      "id": "st_3418aeb544",
+      "id": "st_a48e2d1a80",
       "name": "Gabriela",
       "status": "amarillo",
       "error_code": "SUMA_DIRECTA",
       "stars": 0,
-      "last_diagnosis_id": "dg_f00078e87b",
+      "last_diagnosis_id": "dg_5a38f95f91",
       "source": "demo"
      },
      {
-      "id": "st_32327ec8bd",
+      "id": "st_d20245ff7c",
       "name": "Javier",
       "status": "amarillo",
       "error_code": "SUMA_DIRECTA",
       "stars": 1,
-      "last_diagnosis_id": "dg_bf9cf8c4dd",
+      "last_diagnosis_id": "dg_16c9e91656",
       "source": "demo"
      },
      {
-      "id": "st_2350d0c3b5",
+      "id": "st_4029cffc10",
       "name": "Rosa",
       "status": "amarillo",
       "error_code": "SUMA_DIRECTA",
       "stars": 0,
-      "last_diagnosis_id": "dg_be28f7d624",
+      "last_diagnosis_id": "dg_a0c3a70c5b",
       "source": "demo"
      }
     ]
@@ -385,57 +385,57 @@
     "label": "cambiaron el denominador sin ajustar el de arriba",
     "students": [
      {
-      "id": "st_49d0e8abaa",
+      "id": "st_6e063b7a68",
       "name": "Brayan",
       "status": "rojo",
       "error_code": "NUMERADOR_SIN_AJUSTAR",
       "stars": 3,
-      "last_diagnosis_id": "dg_5f68069e54",
+      "last_diagnosis_id": "dg_d18e4e7a30",
       "source": "demo"
      },
      {
-      "id": "st_267ff88b09",
+      "id": "st_6cddaf141f",
       "name": "Daniela",
       "status": "rojo",
       "error_code": "NUMERADOR_SIN_AJUSTAR",
       "stars": 2,
-      "last_diagnosis_id": "dg_81fd063d36",
+      "last_diagnosis_id": "dg_deef0b5831",
       "source": "demo"
      },
      {
-      "id": "st_7433aebcbf",
+      "id": "st_2f9e130087",
       "name": "Héctor",
       "status": "rojo",
       "error_code": "NUMERADOR_SIN_AJUSTAR",
       "stars": 1,
-      "last_diagnosis_id": "dg_9d2aac4dfa",
+      "last_diagnosis_id": "dg_eceeac5681",
       "source": "demo"
      },
      {
-      "id": "st_17209775be",
+      "id": "st_db8c97325c",
       "name": "Sofía",
       "status": "rojo",
       "error_code": "NUMERADOR_SIN_AJUSTAR",
       "stars": 0,
-      "last_diagnosis_id": "dg_aa1ce8dc57",
+      "last_diagnosis_id": "dg_70cc494a5f",
       "source": "aula"
      },
      {
-      "id": "st_ca40e94d5d",
+      "id": "st_70a2aaa006",
       "name": "Edgar",
       "status": "amarillo",
       "error_code": "NUMERADOR_SIN_AJUSTAR",
       "stars": 1,
-      "last_diagnosis_id": "dg_f784b0afc7",
+      "last_diagnosis_id": "dg_0a8a665e58",
       "source": "demo"
      },
      {
-      "id": "st_683570b2e1",
+      "id": "st_2d77197dff",
       "name": "Isabel",
       "status": "amarillo",
       "error_code": "NUMERADOR_SIN_AJUSTAR",
       "stars": 3,
-      "last_diagnosis_id": "dg_a519b40433",
+      "last_diagnosis_id": "dg_aa336a1dbe",
       "source": "demo"
      }
     ]
@@ -445,30 +445,30 @@
     "label": "convirtieron bien pero sumaron los denominadores",
     "students": [
      {
-      "id": "st_8ef494776f",
+      "id": "st_c689bf7b4b",
       "name": "Alejandra",
       "status": "rojo",
       "error_code": "SUMA_DENOMINADORES",
       "stars": 3,
-      "last_diagnosis_id": "dg_91d28fda5a",
+      "last_diagnosis_id": "dg_8f7ce0fb33",
       "source": "demo"
      },
      {
-      "id": "st_d91f38a786",
+      "id": "st_1244f64040",
       "name": "Fátima",
       "status": "rojo",
       "error_code": "SUMA_DENOMINADORES",
       "stars": 0,
-      "last_diagnosis_id": "dg_0ea9af2f29",
+      "last_diagnosis_id": "dg_ea247d19b4",
       "source": "demo"
      },
      {
-      "id": "st_6596bcc048",
+      "id": "st_ad3f0d6c57",
       "name": "Mateo",
       "status": "amarillo",
       "error_code": "SUMA_DENOMINADORES",
       "stars": 3,
-      "last_diagnosis_id": "dg_43ed47d581",
+      "last_diagnosis_id": "dg_4799e21ea1",
       "source": "demo"
      }
     ]
@@ -478,21 +478,21 @@
     "label": "se equivocaron en una cuenta",
     "students": [
      {
-      "id": "st_70e21c8a37",
+      "id": "st_7f9f8bbd45",
       "name": "José Pablo",
       "status": "rojo",
       "error_code": "ERROR_ARITMETICO",
       "stars": 1,
-      "last_diagnosis_id": "dg_116f72048f",
+      "last_diagnosis_id": "dg_af5b4fd160",
       "source": "demo"
      },
      {
-      "id": "st_4aff0650e8",
+      "id": "st_58e8f63663",
       "name": "Lucía",
       "status": "rojo",
       "error_code": "ERROR_ARITMETICO",
       "stars": 3,
-      "last_diagnosis_id": "dg_aafe06ba40",
+      "last_diagnosis_id": "dg_ecc09389ea",
       "source": "demo"
      }
     ]
@@ -502,30 +502,30 @@
     "label": "lo resolvieron bien",
     "students": [
      {
-      "id": "st_e625a46302",
+      "id": "st_ba6a7e17c6",
       "name": "Ana Lucía",
       "status": "verde",
       "error_code": null,
       "stars": 1,
-      "last_diagnosis_id": "dg_b9751caff4",
+      "last_diagnosis_id": "dg_5d2e851aff",
       "source": "aula"
      },
      {
-      "id": "st_5e6a3e2a71",
+      "id": "st_b65ac06579",
       "name": "Camila",
       "status": "verde",
       "error_code": null,
       "stars": 3,
-      "last_diagnosis_id": "dg_c5ea450236",
+      "last_diagnosis_id": "dg_4ad30a8b7e",
       "source": "demo"
      },
      {
-      "id": "st_208b44ad61",
+      "id": "st_6848a1f23d",
       "name": "Wilson",
       "status": "verde",
       "error_code": null,
       "stars": 0,
-      "last_diagnosis_id": "dg_33daaad4a2",
+      "last_diagnosis_id": "dg_d3c25e7ca0",
       "source": "demo"
      }
     ]
@@ -533,7 +533,7 @@
   ]
  },
  "lesson_for_diagnosis": {
-  "id": "diag:dg_a739beb9a3",
+  "id": "diag:dg_8e0b0a2b0b",
   "title": "¿Por qué 1/2 + 1/3 no es 2/5?",
   "error_code": "SUMA_DIRECTA",
   "level": null,
@@ -2685,9 +2685,9 @@
   "understood": true
  },
  "student": {
-  "id": "st_5e7d32a377",
+  "id": "st_c5deda3643",
   "name": "Kevin",
-  "class_code": "1RO-316"
+  "class_code": "MAT-316"
  },
  "problem": {
   "id": "ex_mock01",
@@ -2702,20 +2702,20 @@
   "text": "2/5 + 1/4"
  },
  "student_detail": {
-  "id": "st_5e7d32a377",
+  "id": "st_c5deda3643",
   "name": "Kevin",
   "status": "rojo",
   "error_code": "SUMA_DIRECTA",
   "stars": 0,
-  "last_diagnosis_id": "dg_a739beb9a3",
+  "last_diagnosis_id": "dg_8e0b0a2b0b",
   "source": "aula",
   "history": [
    {
-    "id": "dg_a739beb9a3",
+    "id": "dg_8e0b0a2b0b",
     "status": "done",
     "student_name": "Kevin",
     "exercise": {
-     "id": "ex_8a2d8d556e",
+     "id": "ex_59b76f2f8a",
      "a": {
       "n": 1,
       "d": 2
@@ -2726,7 +2726,7 @@
      },
      "text": "1/2 + 1/3"
     },
-    "image_url": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22600%22%20height%3D%22560%22%20viewBox%3D%220%200%20600%20560%22%3E%3Crect%20width%3D%22600%22%20height%3D%22560%22%20fill%3D%22%23fffdf6%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%2270%22%20y2%3D%2270%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22102%22%20y2%3D%22102%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22134%22%20y2%3D%22134%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22166%22%20y2%3D%22166%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22198%22%20y2%3D%22198%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22230%22%20y2%3D%22230%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22262%22%20y2%3D%22262%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22294%22%20y2%3D%22294%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22326%22%20y2%3D%22326%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22358%22%20y2%3D%22358%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22390%22%20y2%3D%22390%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22422%22%20y2%3D%22422%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22454%22%20y2%3D%22454%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22486%22%20y2%3D%22486%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22518%22%20y2%3D%22518%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22550%22%20y2%3D%22550%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%2252%22%20x2%3D%2252%22%20y1%3D%220%22%20y2%3D%22560%22%20stroke%3D%22%23f3a3a3%22%20stroke-width%3D%222%22/%3E%3Cg%20font-family%3D%22Segoe%20Print%2C%20Bradley%20Hand%2C%20Comic%20Sans%20MS%2C%20cursive%22%20fill%3D%22%2322304f%22%3E%3Ctext%20x%3D%2270%22%20y%3D%2270%22%20font-size%3D%2230%22%3EKevin%3C/text%3E%3Ctext%20x%3D%2270%22%20y%3D%22150%22%20font-size%3D%2240%22%3E1/2%20%2B%201/3%3C/text%3E%3Ctext%20x%3D%2270%22%20y%3D%22214%22%20font-size%3D%2240%22%3E%3D%202/5%3C/text%3E%3C/g%3E%3C/svg%3E",
+    "image_url": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22600%22%20height%3D%22800%22%20viewBox%3D%220%200%20600%20800%22%3E%3Crect%20width%3D%22600%22%20height%3D%22800%22%20fill%3D%22%23fffdf6%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22110%22%20y2%3D%22110%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22146%22%20y2%3D%22146%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22182%22%20y2%3D%22182%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22218%22%20y2%3D%22218%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22254%22%20y2%3D%22254%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22290%22%20y2%3D%22290%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22326%22%20y2%3D%22326%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22362%22%20y2%3D%22362%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22398%22%20y2%3D%22398%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22434%22%20y2%3D%22434%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22470%22%20y2%3D%22470%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22506%22%20y2%3D%22506%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22542%22%20y2%3D%22542%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22578%22%20y2%3D%22578%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22614%22%20y2%3D%22614%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22650%22%20y2%3D%22650%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22686%22%20y2%3D%22686%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22722%22%20y2%3D%22722%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22758%22%20y2%3D%22758%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%220%22%20x2%3D%22600%22%20y1%3D%22794%22%20y2%3D%22794%22%20stroke%3D%22%23c9dcf0%22%20stroke-width%3D%221.5%22/%3E%3Cline%20x1%3D%2280%22%20x2%3D%2280%22%20y1%3D%220%22%20y2%3D%22800%22%20stroke%3D%22%23f3a3a3%22%20stroke-width%3D%222%22/%3E%3Cg%20font-family%3D%22Segoe%20Print%2C%20Bradley%20Hand%2C%20Comic%20Sans%20MS%2C%20cursive%22%20fill%3D%22%2322304f%22%3E%3Ctext%20x%3D%22110%22%20y%3D%22120%22%20font-size%3D%2236%22%3EKevin%3C/text%3E%3Ctext%20x%3D%22110%22%20y%3D%22230%22%20font-size%3D%2244%22%3E1/2%20%2B%201/3%3C/text%3E%3Ctext%20x%3D%22110%22%20y%3D%22302%22%20font-size%3D%2244%22%3E%3D%202/5%3C/text%3E%3C/g%3E%3C/svg%3E",
     "transcript": [
      {
       "index": 0,
